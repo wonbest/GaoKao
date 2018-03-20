@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"module": "es2015",
+		"allowSyntheticDefaultImports": true,
+		"experimentalDecorators": true,
+		"diagnostics": true
+	},
+	"exclude": [
+		"node_modules",
+		"bower_components",
+		"jspm_packages",
+		"webapp/**",
+        "java/**",
+        "webapp-static/**",
+		"tmp",
+		"temp"
+	]
+}

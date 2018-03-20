@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+                     http://www.springframework.org/schema/context
+                     http://www.springframework.org/schema/context/spring-context-4.2.xsd
+                     http://www.springframework.org/schema/aop
+                     http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+                     http://www.springframework.org/schema/tx
+                     http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+                 	   http://www.springframework.org/schema/mvc
+					 		http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+					 		http://www.springframework.org/schema/task
+		             	http://www.springframework.org/schema/task/spring-task-4.2.xsd
+					 		http://www.springframework.org/schema/util
+					 		http://www.springframework.org/schema/util/spring-util-4.2.xsd
+					">
+
+	<!-- 启用注解 -->
+	<context:annotation-config />
+
+	<mvc:annotation-driven />
+	
+	<mvc:default-servlet-handler/>
+
+	<!-- 加载controller -->
+	<context:component-scan base-package="com.ll.gaokao.controller" />
+
+	<!--通用视图解析器 -->
+	<bean id="viewResolverCommon"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".html" />
+		<property name="order" value="1" />
+	</bean>
+
+	<mvc:resources location="/,classpath:/META-INF/publicResources/"
+		mapping="/resources/**" />
+</beans>
