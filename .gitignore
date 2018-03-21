@@ -1,11 +1,5 @@
 /target/
 
-/**/node_modules/
-
-/**/build
-
-/**/webapp
-
 /.classpath
 /.project
 /.settings/
