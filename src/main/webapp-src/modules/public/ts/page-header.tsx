@@ -1,10 +1,25 @@
 import * as React from 'react'
 import * as ReactDom from 'react-dom'
 
-class PageHeader extends React.Component<any, any> {
+import { Row, Col } from 'antd'
+
+export default class PageHeader extends React.Component<any, any> {
     render() {
         return (
-            <span>header</span>
+            <Row style={{
+                height: '80px',
+                width: "100%",
+                lineHeight: '80px'
+            }}>
+                <Col span={8} offset={2}>
+                    <h1 style={{
+                        fontSize: '30px',
+                        fontFamily: '楷书'
+                    }}>高考志愿推荐系统</h1>
+                </Col>
+                <Col span={6} offset={8} >
+                </Col>
+            </Row>
         )
     }
 }

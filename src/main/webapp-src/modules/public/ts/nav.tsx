@@ -6,14 +6,14 @@ import { Row, Col } from 'antd'
 import { Divider } from 'antd'
 
 export default class Nav extends React.Component<any, any> {
-    private rowStyle: {} = {
+    private rowStyle: React.CSSProperties = {
         backgroundColor: '#108ee9',
         width: '100%',
         height: '40px',
         lineHeight: '40px'
     }
 
-    private aStyle: {} = {
+    private aStyle: React.CSSProperties = {
         color: 'white',
         fontSize: '18px'
     }

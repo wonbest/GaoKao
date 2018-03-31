@@ -1,8 +1,10 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
-import Nav from '../../public/ts/nav'
+import * as moment from 'moment'
+
+import Content from './content'
 
 $(() => {
-    ReactDOM.render(<Nav />, document.getElementById("root"))
+    ReactDOM.render(<Content  />, document.getElementById("root"))
 })
