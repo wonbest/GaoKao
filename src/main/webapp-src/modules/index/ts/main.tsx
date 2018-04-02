@@ -6,5 +6,5 @@ import * as moment from 'moment'
 import Content from './content'
 
 $(() => {
-    ReactDOM.render(<Content  />, document.getElementById("root"))
+    ReactDOM.render(<Content />, document.getElementById("root"))
 })
