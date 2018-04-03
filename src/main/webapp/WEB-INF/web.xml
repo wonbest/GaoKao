@@ -22,9 +22,6 @@
 
 	<!-- 实例化Spring容器 -->
 	<!-- 应用启动时,该监听器被执行,它会读取Spring相关配置文件,其默认会到WEB-INF中查找applicationContext.xml -->
-	<!-- http://starscream.iteye.com/blog/1107036 -->
-	<!-- http://www.davenkin.me/post/2012-10-18/40039948363 -->
-	<!-- WebApplicationContextUtils.getWebApplicationContext() -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener
 		</listener-class>
