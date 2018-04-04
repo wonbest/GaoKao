@@ -24,8 +24,8 @@
 	<context:annotation-config />
 
 	<mvc:annotation-driven />
-	
-	<mvc:default-servlet-handler/>
+
+	<mvc:default-servlet-handler />
 
 	<!-- 加载controller -->
 	<context:component-scan base-package="com.ll.gaokao.controller" />
@@ -36,6 +36,24 @@
 		<property name="prefix" value="/" />
 		<property name="suffix" value=".html" />
 		<property name="order" value="1" />
+	</bean>
+
+	<!-- 这个是针对返回视图还是json值的视图配置 来分别处理同步和异步请求 -->
+	<bean
+		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="viewResolvers">
+			<list>
+				<ref bean="viewResolverCommon" />
+			</list>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<!-- 输出为JSON数据 -->
+				<bean
+					class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+				</bean>
+			</list>
+		</property>
 	</bean>
 
 	<mvc:resources location="/,classpath:/META-INF/publicResources/"

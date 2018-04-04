@@ -14,6 +14,6 @@ public class MgmtMajor {
 	private RepoMajor repoMajor;
 	
 	public List<Major> findByZyType(String type) {
-		return repoMajor.findByZyType(type);
+		return repoMajor.findByZytype(type);
 	}
 }
