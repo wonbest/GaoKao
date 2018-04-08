@@ -23,4 +23,14 @@ public class CtrlSchool {
 			return ResultJson.FALSE;
 		}
 	}
+	
+	@RequestMapping(value="getAllSchoolProperty")
+	@ResponseBody
+	public ResultJson getAllSchoolProperty() {
+		try {
+			return ResultJson.trueState("获取成功！", mgmtSchool.findAllSchoolProperty());
+		} catch (Exception e) {
+			return ResultJson.FALSE;
+		}
+	}
 }

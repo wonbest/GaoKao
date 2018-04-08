@@ -17,6 +17,8 @@ interface ToolbarProps {
 }
 interface ToolbarStates {
     provinceData: any[]
+    schoolTypeData: any[]
+    educationData: any[]
     provinceSelectedTags: any[]
     typeSelectedTags: any[]
     educationSelectedTags: any[]
@@ -26,15 +28,15 @@ export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates
 
     state: ToolbarStates = {
         provinceData: [],
+        schoolTypeData: [],
+        educationData: [],
         provinceSelectedTags: [],
         typeSelectedTags: [],
         educationSelectedTags: [],
         specialSelectedTags: []
     }
 
-    private testTags1 = ['Movies', 'Books', 'Music', 'Sports']
-    private testTags2 = ['Movies', 'Books', 'Music', 'Sports']
-    private testTags3 = ['Movies', 'Books', 'Music', 'Sports']
+    private specialProps = ['985', '211']
 
     handleOptionOnClick = (tag: string, checked: boolean, prop: string) => {
         switch (prop) {
@@ -85,12 +87,30 @@ export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates
         })
     }
 
-    fetchSchoolType = () => {
-
+    fetchSchoolProperty = () => {
+        $.ajax({
+            url: 'getAllSchoolProperty',
+            type: 'post',
+            async: true,
+            success: (data) => {
+                this.setState({
+                    schoolTypeData: data.result.filter(e => e !== '[]')
+                })
+            }
+        })
     }
 
     fetchEducation = () => {
-
+        $.ajax({
+            url: 'getAllSchoolType',
+            type: 'post',
+            async: true,
+            success: (data) => {
+                this.setState({
+                    educationData: data.result.filter(e => e !== '[]')
+                })
+            }
+        })
     }
 
     fetchSpecialProp = () => {
@@ -118,7 +138,7 @@ export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates
     componentDidMount() {
         this.fetchEducation()
         this.fetchProvince()
-        this.fetchSchoolType()
+        this.fetchSchoolProperty()
         this.fetchSpecialProp()
     }
 
@@ -136,21 +156,21 @@ export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates
                     <Col span={3}>院校类型</Col>
                     <Col span={1}><Icon type="right" /></Col>
                     <Col span={20}>
-                        {...this.createCheckableTag(this.testTags1, 'type')}
+                        {...this.createCheckableTag(this.state.schoolTypeData, 'type')}
                     </Col>
                 </Row>
                 <Row>
                     <Col span={3}>学历层次</Col>
                     <Col span={1}><Icon type="right" /></Col>
                     <Col span={20}>
-                        {...this.createCheckableTag(this.testTags2, 'education')}
+                        {...this.createCheckableTag(this.state.educationData, 'education')}
                     </Col>
                 </Row>
                 <Row>
                     <Col span={3}>特殊属性</Col>
                     <Col span={1}><Icon type="right" /></Col>
                     <Col span={20}>
-                        {...this.createCheckableTag(this.testTags3, 'special')}
+                        {...this.createCheckableTag(this.specialProps, 'special')}
                     </Col>
                 </Row>
             </Card>
