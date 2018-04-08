@@ -14,7 +14,7 @@ public class CtrlMajor {
 	@Autowired
 	private MgmtMajor mgmtMajor;
 	
-	@RequestMapping(value="/getMajorByType")
+	@RequestMapping(value="getMajorByType")
 	@ResponseBody
 	public ResultJson getMajorByType() {
 		return ResultJson.trueState("获取成功！", mgmtMajor.findByZyType("哲学类"));

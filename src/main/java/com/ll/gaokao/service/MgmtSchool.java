@@ -5,15 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ll.gaokao.dao.RepoMajor;
-import com.ll.gaokao.model.Major;
+import com.ll.gaokao.dao.RepoSchool;
 
 @Service
-public class MgmtMajor {
+public class MgmtSchool {
 	@Autowired
-	private RepoMajor dao;
+	private RepoSchool dao;
 	
-	public List<Major> findByZyType(String type) {
-		return dao.findByZytype(type);
+	public List<String> findAllSchooltype() {
+		return dao.findAllSchooltype();
 	}
 }

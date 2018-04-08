@@ -16,6 +16,7 @@ interface ToolbarProps {
 
 }
 interface ToolbarStates {
+    provinceData: any[]
     provinceSelectedTags: any[]
     typeSelectedTags: any[]
     educationSelectedTags: any[]
@@ -24,13 +25,13 @@ interface ToolbarStates {
 export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates> {
 
     state: ToolbarStates = {
+        provinceData: [],
         provinceSelectedTags: [],
         typeSelectedTags: [],
         educationSelectedTags: [],
         specialSelectedTags: []
     }
 
-    private testTags = ['Movies', 'Books', 'Music', 'Sports']
     private testTags1 = ['Movies', 'Books', 'Music', 'Sports']
     private testTags2 = ['Movies', 'Books', 'Music', 'Sports']
     private testTags3 = ['Movies', 'Books', 'Music', 'Sports']
@@ -72,7 +73,16 @@ export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates
     }
 
     fetchProvince = () => {
-
+        $.ajax({
+            url: 'getAllProvince',
+            type: 'post',
+            async: true,
+            success: (data) => {
+                this.setState({
+                    provinceData: data.result
+                })
+            }
+        })
     }
 
     fetchSchoolType = () => {
@@ -119,7 +129,7 @@ export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates
                     <Col span={3}>所在省份</Col>
                     <Col span={1}><Icon type="right" /></Col>
                     <Col span={20}>
-                        {...this.createCheckableTag(this.testTags, 'province')}
+                        {...this.createCheckableTag(this.state.provinceData, 'province')}
                     </Col>
                 </Row>
                 <Row>

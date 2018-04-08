@@ -15,10 +15,10 @@ module.exports = {
 	],
 	es6: [],
 	ts: [
-		// {
-		// 	source: ['webapp-src/modules/search-school/ts/main.tsx'],
-		// 	target: 'webapp/modules/search-school/js/',
-		// 	name: 'main.js' 
-		// },
+		{
+			source: ['webapp-src/modules/search-school/ts/app.tsx'],
+			target: 'webapp/modules/search-school/js/',
+			name: 'app.js' 
+		},
 	]
 }
