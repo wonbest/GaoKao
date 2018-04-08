@@ -47,16 +47,15 @@ export default class HotSchool extends React.Component<any, HotSchoolStates> {
         },
     ]
 
-    fetchDataSource = () => {
-        // $.ajax({
-        //     url: '',
-        //     type: 'post',
-        //     success: (data) => {
-
-        //     }
-        // })
-        this.setState({
-            dataSource: this.testData
+    fetchDataSource = (params = {}) => {
+        $.ajax({
+            url: '',
+            type: 'post',
+            success: (data) => {
+                this.setState({
+                    dataSource: this.testData
+                })
+            }
         })
     }
 

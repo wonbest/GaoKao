@@ -38,6 +38,10 @@ export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates
 
     private specialProps = ['985', '211']
 
+    fetchSchoolList = (params = {}) => {
+        
+    }
+
     handleOptionOnClick = (tag: string, checked: boolean, prop: string) => {
         switch (prop) {
             case 'province':

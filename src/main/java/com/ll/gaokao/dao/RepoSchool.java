@@ -16,6 +16,9 @@ public interface RepoSchool extends JpaRepository<School, String> {
 	@Query(value="select distinct schoolproperty from school", nativeQuery=true)
 	public List<String> findAllSchoolproperty();
 	
-	@Query(value="select distinct schoolproperty from school", nativeQuery=true)
-	public Page<School> queryPagefindAll(Pageable pageable);
+//	@Query(value="select distinct schoolproperty from school", nativeQuery=true)
+//	public Page<School> queryPagefindAll(Pageable pageable);
+	
+	@Query(value="select * from school order by clicks", nativeQuery=true)
+	public List<School> findTop5();
 }

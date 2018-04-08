@@ -33,4 +33,24 @@ public class CtrlSchool {
 			return ResultJson.FALSE;
 		}
 	}
+	
+	@RequestMapping(value="getSchoolList")
+	@ResponseBody
+	public ResultJson getSchoolList() {
+		try {
+			return ResultJson.trueState("获取成功！", mgmtSchool.findAll());
+		} catch (Exception e) {
+			return ResultJson.FALSE;
+		}
+	}
+	
+	@RequestMapping(value="getHotSchool")
+	@ResponseBody
+	public ResultJson getHotSchool() {
+		try {
+			return ResultJson.trueState("获取成功！", mgmtSchool.findHot());
+		} catch (Exception e) {
+			return ResultJson.FALSE;
+		}
+	}
 }

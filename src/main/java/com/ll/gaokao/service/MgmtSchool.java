@@ -23,7 +23,15 @@ public class MgmtSchool {
 		return dao.findAllSchoolproperty();
 	}
 	
-	public Page<School> queryPageFindAll(Pageable pageable) {
-		return dao.queryPagefindAll(pageable);
+	public List<School> findAll() {
+		return dao.findAll();
 	}
+	
+	public List<School> findHot() {
+		return dao.findTop5();
+	}
+	
+//	public Page<School> queryPageFindAll(Pageable pageable) {
+//		return dao.queryPagefindAll(pageable);
+//	}
 }
