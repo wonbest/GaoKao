@@ -8,12 +8,14 @@ import { Form } from 'antd'
 import { Tag } from 'antd'
 import { Icon } from 'antd'
 
+import { observer } from 'mobx-react'
+
 import { FormComponentProps } from 'antd/lib/form/Form'
 
 import CheckedTag from '../../public/ts/checked-tag'
 
 interface ToolbarProps {
-
+    store: any
 }
 interface ToolbarStates {
     provinceData: any[]
@@ -24,6 +26,7 @@ interface ToolbarStates {
     educationSelectedTags: any[]
     specialSelectedTags: any[]
 }
+@observer
 export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates> {
 
     state: ToolbarStates = {
@@ -38,10 +41,6 @@ export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates
 
     private specialProps = ['985', '211']
 
-    fetchSchoolList = (params = {}) => {
-        
-    }
-
     handleOptionOnClick = (tag: string, checked: boolean, prop: string) => {
         switch (prop) {
             case 'province':
@@ -49,6 +48,9 @@ export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates
                     provinceSelectedTags: checked
                         ? [...this.state.provinceSelectedTags, tag]
                         : this.state.provinceSelectedTags.filter(t => t !== tag)
+                }, () => {
+                    console.log(this.state.provinceSelectedTags)
+                    this.props.store.schoolProvince = this.state.provinceSelectedTags
                 })
                 break
             case 'type':
@@ -56,6 +58,9 @@ export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates
                     typeSelectedTags: checked
                         ? [...this.state.typeSelectedTags, tag]
                         : this.state.typeSelectedTags.filter(t => t !== tag)
+                }, () => {
+                    console.log(this.state.typeSelectedTags)
+                    this.props.store.schoolProperty = this.state.typeSelectedTags
                 })
                 break
             case 'education':
@@ -63,6 +68,9 @@ export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates
                     educationSelectedTags: checked
                         ? [...this.state.educationSelectedTags, tag]
                         : this.state.educationSelectedTags.filter(t => t !== tag)
+                }, () => {
+                    console.log(this.state.educationSelectedTags)
+                    this.props.store.schoolType = this.state.educationSelectedTags
                 })
                 break
             case 'special':
@@ -70,12 +78,14 @@ export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates
                     specialSelectedTags: checked
                         ? [...this.state.specialSelectedTags, tag]
                         : this.state.specialSelectedTags.filter(t => t !== tag)
+                }, () => {
+                    console.log(this.state.specialSelectedTags)
+                    this.props.store.schoolSpecialProps = this.state.specialSelectedTags
                 })
                 break
             default:
                 break
         }
-
     }
 
     fetchProvince = () => {
@@ -117,14 +127,6 @@ export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates
         })
     }
 
-    fetchSpecialProp = () => {
-
-    }
-
-    handleTagsOnChange = () => {
-
-    }
-
     createCheckableTag = (data = [], prop: string) => {
         let options = []
         data.forEach(e => {
@@ -143,7 +145,6 @@ export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates
         this.fetchEducation()
         this.fetchProvince()
         this.fetchSchoolProperty()
-        this.fetchSpecialProp()
     }
 
     render() {

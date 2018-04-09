@@ -30,14 +30,14 @@ export default class Nav extends React.Component<any, any> {
         return (
             <Affix>
                 <Row style={this.rowStyle}>
-                    <Col span={2} offset={2}>
+                    {/* <Col span={2} offset={2}>
                         <a
                             onClick={this.handleNavOnClick.bind(this, 'index')}
                             style={this.aStyle}>
                             首页
                         </a>
-                    </Col>
-                    <Col span={2}>
+                    </Col> */}
+                    <Col span={2} offset={2}>
                         <a
                             onClick={this.handleNavOnClick.bind(this, 's_school')}
                             style={this.aStyle}>
@@ -65,7 +65,7 @@ export default class Nav extends React.Component<any, any> {
                             志愿推荐
                         </a>
                     </Col>
-                    <Col span={4} offset={8}>
+                    {/* <Col span={4} offset={8}>
                         <a
                             onClick={this.handleNavOnClick.bind(this, 'login')}
                             style={{ color: 'white', fontSize: '15px' }}>
@@ -77,7 +77,7 @@ export default class Nav extends React.Component<any, any> {
                             style={{ color: 'white', fontSize: '15px' }}>
                             注册
                         </a>
-                    </Col>
+                    </Col> */}
                 </Row>
             </Affix>
         )

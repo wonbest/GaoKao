@@ -1,14 +1,20 @@
 import * as React from 'react'
 import * as ReactDom from 'react-dom'
 
+import { observer } from 'mobx-react'
+
 import { Table } from 'antd'
 
+interface SchoolTableProps {
+    store: any
+}
 interface SchoolTableStates {
     dataSource: any[]
-    pagination: {}
+    pagination: any
     loading: boolean
 }
-export default class SchoolTable extends React.Component<any, SchoolTableStates> {
+@observer
+export default class SchoolTable extends React.Component<SchoolTableProps, SchoolTableStates> {
     state: SchoolTableStates = {
         dataSource: [],
         pagination: {
@@ -22,7 +28,8 @@ export default class SchoolTable extends React.Component<any, SchoolTableStates>
     private columns = [
         {
             title: '学校名称',
-            dataIndex: 'schoolname'
+            dataIndex: '',
+            render: text => <a href={text.guanwang} target="blank" >{text.schoolname}</a>
         },
         {
             title: '院校类型',
@@ -38,7 +45,23 @@ export default class SchoolTable extends React.Component<any, SchoolTableStates>
         }
     ]
 
+    handleTableChange = (pagination, filters, sorter) => {
+        const pager = { ...this.state.pagination }
+        pager.current = pagination.current
+        pager.pageSize = pagination.pageSize
+        this.setState({
+            pagination: pager,
+        })
+        this.fetchSchoolInfo({
+            rowCount: pagination.pageSize,
+            current: pagination.current,
+        })
+    }
+
     fetchSchoolInfo = (params = {}) => {
+        this.setState({
+            loading: true
+        })
         $.ajax({
             url: 'getSchoolList',
             data: {
@@ -46,16 +69,26 @@ export default class SchoolTable extends React.Component<any, SchoolTableStates>
             },
             type: 'post',
             success: (data) => {
+                const pagination = { ...this.state.pagination }
+                pagination.total = data.total
                 this.setState({
-                    dataSource: data.result,
-                    loading: false
+                    dataSource: data.rows,
+                    pagination,
+                    loading: false,
                 })
             }
         })
     }
 
     componentDidMount() {
-        this.fetchSchoolInfo(this.state.pagination)
+        this.fetchSchoolInfo({
+            rowCount: this.state.pagination.pageSize,
+            current: this.state.pagination.current,
+            schoolType: this.props.store.schoolType.slice(),
+            province: this.props.store.schoolProvince.slice(),
+            schoolProperty: this.props.store.schoolProperty.slice(),
+            specialProps: this.props.store.schoolSpecialProps.slice(),
+        })
     }
 
     render() {
@@ -65,7 +98,9 @@ export default class SchoolTable extends React.Component<any, SchoolTableStates>
                 loading={this.state.loading}
                 rowKey={record => record.schoolid}
                 dataSource={this.state.dataSource}
-                style={{marginTop: '10px 0px 0px 0px'}} />
+                onChange={this.handleTableChange}
+                pagination={this.state.pagination}
+                style={{ margin: '10px 0px 0px 0px' }} />
         )
     }
 }

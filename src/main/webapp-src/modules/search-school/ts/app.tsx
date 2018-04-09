@@ -3,15 +3,21 @@ import * as ReactDom from 'react-dom'
 
 import {Row, Col} from 'antd'
 
+import { observer } from 'mobx-react'
+
 import SchoolTable from './schoolTable'
 import Toolbar from './toolbar'
 
-export default class SearchSchool extends React.Component<any, any>{
+interface SearchSchoolProps {
+    store: any
+}
+@observer
+export default class SearchSchool extends React.Component<SearchSchoolProps, any>{
     render() {
         return (
             <div>
-                <Row><Toolbar /></Row>
-                <Row><SchoolTable /></Row>
+                <Row><Toolbar store={this.props.store} /></Row>
+                <Row><SchoolTable store={this.props.store} /></Row>
             </div>
         )
     }
