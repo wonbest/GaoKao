@@ -16,7 +16,7 @@ export default class SearchSchool extends React.Component<SearchSchoolProps, any
     render() {
         return (
             <div>
-                <Row><Toolbar store={this.props.store} /></Row>
+                {/* <Row><Toolbar store={this.props.store} /></Row> */}
                 <Row><SchoolTable store={this.props.store} /></Row>
             </div>
         )

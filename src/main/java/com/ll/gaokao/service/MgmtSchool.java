@@ -44,10 +44,10 @@ public class MgmtSchool {
 	
 	public Page<School> queryPageFindAll(
 			Pageable pageable, 
-			String[] schoolType, 
-			String[] province, 
-			String[] schoolProperty, 
-			String[] specialProps) {
+			List<String> schoolType, 
+			List<String> province, 
+			List<String> schoolProperty, 
+			List<String> specialProps) {
 		Specification<School> specification = new Specification<School>() {
 
 			@Override
@@ -58,14 +58,14 @@ public class MgmtSchool {
 				Path<String> pathF985 = root.get("f985");
 				Path<String> pathF211 = root.get("f211");
 				List<Predicate> lsPredicates = new ArrayList<>();
-				if(province != null && province.length > 0) {
+				if(province != null && province.size() > 0) {
 					In<String> in = cb.in(pathProvince);
 					for(String str : province) {
 						in.value(str);
 					}
 					lsPredicates.add(in);
 				}
-				if(schoolType != null && schoolType.length > 0) {
+				if(schoolType != null && schoolType.size() > 0) {
 					In<String> in = cb.in(pathSchoolType);
 					for(String str : schoolType) {
 						in.value(str);
@@ -73,7 +73,7 @@ public class MgmtSchool {
 					lsPredicates.add(in);
 //					lsPredicates.add(cb.equal(pathSchoolType, schoolType));
 				}
-				if(schoolProperty != null && schoolProperty.length > 0) {
+				if(schoolProperty != null && schoolProperty.size() > 0) {
 					In<String> in = cb.in(pathSchoolProperty);
 					for(String str : schoolProperty) {
 						in.value(str);

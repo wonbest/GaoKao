@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.ll.gaokao.model.School;
 import com.ll.gaokao.service.MgmtSchool;
 import com.ll.gaokao.util.BGDataGrid;
@@ -59,19 +60,19 @@ public class CtrlSchool {
 	@ResponseBody
 	public BGDataGrid getSchoolList(
 			BGPageModel pageModel, 
-			String[] schoolType, 
-			String[] province, 
-			String[] schoolProperty, 
-			String[] specialProps) {
+			String schoolType, 
+			String province, 
+			String schoolProperty, 
+			String specialProps) {
 		Map<String, String> sort = pageModel.getSort();
 		sort.clear();
 		sort.put("ranking", Direction.ASC.toString());
 		Page<School> page = mgmtSchool.queryPageFindAll(
 				pageModel.bePageable(sort),
-				schoolType,
-				province, 
-				schoolProperty, 
-				specialProps);
+				JSON.parseArray(schoolType, String.class),
+				JSON.parseArray(province, String.class), 
+				JSON.parseArray(schoolProperty, String.class), 
+				JSON.parseArray(specialProps, String.class));
 		return BGDataGrid.newInstance(page);
 	}
 
