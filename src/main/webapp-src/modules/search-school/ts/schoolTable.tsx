@@ -81,10 +81,7 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
         this.setState({
             pagination: pager,
         })
-        this.fetchSchoolInfo({
-            rowCount: pagination.pageSize,
-            current: pagination.current,
-        })
+        this.fetch()
     }
 
     /** 加载学校列表 */

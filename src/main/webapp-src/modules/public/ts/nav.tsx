@@ -1,11 +1,16 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
+import { Link } from 'react-router-dom'
+
 import { Affix, Button } from 'antd'
 import { Row, Col } from 'antd'
 import { Divider } from 'antd'
 
-export default class Nav extends React.Component<any, any> {
+interface NavProps {
+    onChange: (param: string)=>void
+}
+export default class Nav extends React.Component<NavProps, any> {
     private rowStyle: React.CSSProperties = {
         backgroundColor: '#108ee9',
         width: '100%',
@@ -19,11 +24,7 @@ export default class Nav extends React.Component<any, any> {
     }
 
     handleNavOnClick = (key: string) => {
-        switch (key) {
-            default:
-                console.log(key)
-                break
-        }
+        this.props.onChange(key)
     }
 
     render() {
