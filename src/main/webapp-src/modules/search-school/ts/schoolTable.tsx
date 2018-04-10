@@ -67,8 +67,8 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
         }
     ]
 
-    /** 学校列表onchange事件 */
-    handleTableChange = (pagination, filters, sorter) => {
+    /** 学校列表onChange事件 */
+    handleTableOnChange = (pagination, filters, sorter) => {
         const pager = { ...this.state.pagination }
         pager.current = pagination.current
         pager.pageSize = pagination.pageSize
@@ -275,7 +275,7 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
                     loading={this.state.loading}
                     rowKey={record => record.schoolid}
                     dataSource={this.state.dataSource}
-                    onChange={this.handleTableChange}
+                    onChange={this.handleTableOnChange}
                     pagination={this.state.pagination}
                     style={{ margin: '10px 0px 0px 0px' }} />
             </div>
