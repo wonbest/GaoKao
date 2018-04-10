@@ -22,10 +22,11 @@ interface SchoolTableStates {
     provinceData: any[]
     schoolTypeData: any[]
     educationData: any[]
+    schoolNatureData: any[]
     provinceSelectedTags: any[]
     typeSelectedTags: any[]
     educationSelectedTags: any[]
-    specialSelectedTags: any[]
+    schoolNatureSelectedTags: any[]
 }
 @observer
 export default class SchoolTable extends React.Component<SchoolTableProps, SchoolTableStates> {
@@ -41,10 +42,11 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
         provinceData: [],
         schoolTypeData: [],
         educationData: [],
+        schoolNatureData: [],
         provinceSelectedTags: [],
         typeSelectedTags: [],
         educationSelectedTags: [],
-        specialSelectedTags: []
+        schoolNatureSelectedTags: []
     }
 
     private columns = [
@@ -54,12 +56,16 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
             render: text => <a href={text.guanwang} target="blank" >{text.schoolname}</a>
         },
         {
+            title: '所在省份',
+            dataIndex: 'province'
+        },
+        {
             title: '院校类型',
             dataIndex: 'schoolproperty'
         },
         {
-            title: '所在省份',
-            dataIndex: 'province'
+            title: '院校性质',
+            dataIndex: 'schoolnature'
         },
         {
             title: '学历层次',
@@ -104,9 +110,6 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
         })
     }
 
-    ///////////////////////////////////////////////////////
-    private specialProps = ['985', '211']
-
     /** 监控工具栏过滤条件变化 */
     handleOptionOnClick = (tag: string, checked: boolean, prop: string) => {
         switch (prop) {
@@ -116,8 +119,6 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
                         ? [...this.state.provinceSelectedTags, tag]
                         : this.state.provinceSelectedTags.filter(t => t !== tag)
                 }, () => {
-                    console.log(this.state.provinceSelectedTags)
-                    this.props.store.schoolProvince = this.state.provinceSelectedTags
                     this.fetch()
                 })
                 break
@@ -127,8 +128,6 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
                         ? [...this.state.typeSelectedTags, tag]
                         : this.state.typeSelectedTags.filter(t => t !== tag)
                 }, () => {
-                    console.log(this.state.typeSelectedTags)
-                    this.props.store.schoolProperty = this.state.typeSelectedTags
                     this.fetch()
                 })
                 break
@@ -138,19 +137,15 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
                         ? [...this.state.educationSelectedTags, tag]
                         : this.state.educationSelectedTags.filter(t => t !== tag)
                 }, () => {
-                    console.log(this.state.educationSelectedTags)
-                    this.props.store.schoolType = this.state.educationSelectedTags
                     this.fetch()
                 })
                 break
-            case 'special':
+            case 'schoolNature':
                 this.setState({
-                    specialSelectedTags: checked
-                        ? [...this.state.specialSelectedTags, tag]
-                        : this.state.specialSelectedTags.filter(t => t !== tag)
+                    schoolNatureSelectedTags: checked
+                        ? [...this.state.schoolNatureSelectedTags, tag]
+                        : this.state.schoolNatureSelectedTags.filter(t => t !== tag)
                 }, () => {
-                    console.log(this.state.specialSelectedTags)
-                    this.props.store.schoolSpecialProps = this.state.specialSelectedTags
                     this.fetch()
                 })
                 break
@@ -164,10 +159,24 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
         this.fetchSchoolInfo({
             rowCount: this.state.pagination.pageSize,
             current: this.state.pagination.current,
-            schoolType: JSON.stringify(this.props.store.schoolType.slice()),
-            province: JSON.stringify(this.props.store.schoolProvince.slice()),
-            schoolProperty: JSON.stringify(this.props.store.schoolProperty.slice()),
-            specialProps: JSON.stringify(this.props.store.schoolSpecialProps.slice()),
+            schoolType: JSON.stringify(this.state.educationSelectedTags),
+            province: JSON.stringify(this.state.provinceSelectedTags),
+            schoolProperty: JSON.stringify(this.state.typeSelectedTags),
+            schoolNature: JSON.stringify(this.state.schoolNatureSelectedTags),
+        })
+    }
+
+    /** 加载院校性质数据 */
+    fetchSchoolNature = () => {
+        $.ajax({
+            url: 'getAllSchoolNature',
+            type: 'post',
+            async: false,
+            success: (data) => {
+                this.setState({
+                    schoolNatureData: data.result.filter(e => e !== '[]')
+                })
+            }
         })
     }
 
@@ -176,7 +185,7 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
         $.ajax({
             url: 'getAllProvince',
             type: 'post',
-            async: true,
+            async: false,
             success: (data) => {
                 this.setState({
                     provinceData: data.result
@@ -190,7 +199,7 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
         $.ajax({
             url: 'getAllSchoolProperty',
             type: 'post',
-            async: true,
+            async: false,
             success: (data) => {
                 this.setState({
                     schoolTypeData: data.result.filter(e => e !== '[]')
@@ -204,7 +213,7 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
         $.ajax({
             url: 'getAllSchoolType',
             type: 'post',
-            async: true,
+            async: false,
             success: (data) => {
                 this.setState({
                     educationData: data.result.filter(e => e !== '[]')
@@ -228,13 +237,12 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
         return options
     }
 
-    //////////////////////////////////////////////////////
-
     componentDidMount() {
         this.fetch()
         this.fetchEducation()
         this.fetchProvince()
         this.fetchSchoolProperty()
+        this.fetchSchoolNature()
     }
 
     render() {
@@ -263,10 +271,10 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
                         </Col>
                     </Row>
                     <Row>
-                        <Col span={3}>特殊属性</Col>
+                        <Col span={3}>院校性质</Col>
                         <Col span={1}><Icon type="right" /></Col>
                         <Col span={20}>
-                            {...this.createCheckableTag(this.specialProps, 'special')}
+                            {...this.createCheckableTag(this.state.schoolNatureData, 'schoolNature')}
                         </Col>
                     </Row>
                 </Card>

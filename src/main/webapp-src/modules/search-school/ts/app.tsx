@@ -15,7 +15,7 @@ interface SearchSchoolProps {
 export default class SearchSchool extends React.Component<SearchSchoolProps, any>{
     render() {
         return (
-            <div>
+            <div style={{marginTop: '5px'}}>
                 {/* <Row><Toolbar store={this.props.store} /></Row> */}
                 <Row><SchoolTable store={this.props.store} /></Row>
             </div>

@@ -34,6 +34,10 @@ public class MgmtSchool {
 		return dao.findAllSchoolproperty();
 	}
 	
+	public List<String> findAllSchoolNature() {
+		return dao.findAllSchoolNature();
+	}
+	
 	public Page<School> findAll(Pageable pageable) {
 		return dao.findAll(pageable);
 	}
@@ -47,7 +51,7 @@ public class MgmtSchool {
 			List<String> schoolType, 
 			List<String> province, 
 			List<String> schoolProperty, 
-			List<String> specialProps) {
+			List<String> schoolNature) {
 		Specification<School> specification = new Specification<School>() {
 
 			@Override
@@ -55,8 +59,7 @@ public class MgmtSchool {
 				Path<String> pathProvince = root.get("province");
 				Path<String> pathSchoolType = root.get("schooltype");
 				Path<String> pathSchoolProperty = root.get("schoolproperty");
-				Path<String> pathF985 = root.get("f985");
-				Path<String> pathF211 = root.get("f211");
+				Path<String> pathSchoolNature = root.get("schoolnature");
 				List<Predicate> lsPredicates = new ArrayList<>();
 				if(province != null && province.size() > 0) {
 					In<String> in = cb.in(pathProvince);
@@ -71,7 +74,6 @@ public class MgmtSchool {
 						in.value(str);
 					}
 					lsPredicates.add(in);
-//					lsPredicates.add(cb.equal(pathSchoolType, schoolType));
 				}
 				if(schoolProperty != null && schoolProperty.size() > 0) {
 					In<String> in = cb.in(pathSchoolProperty);
@@ -79,21 +81,18 @@ public class MgmtSchool {
 						in.value(str);
 					}
 					lsPredicates.add(in);
-//					lsPredicates.add(cb.equal(pathSchoolProperty, schoolProperty));
 				}
-//				if(specialProps != null && schoolType.length > 0) {
-//					if(StringUtils.equals("211", specialProps)) {
-//						lsPredicates.add(cb.equal(pathF211, specialProps));
-//					}
-//					if(StringUtils.equals("985", specialProps)) {
-//						lsPredicates.add(cb.equal(pathF985, specialProps));
-//					}
-//				}
+				if(schoolNature != null && schoolNature.size() > 0) {
+					In<String> in = cb.in(pathSchoolNature);
+					for(String str : schoolNature) {
+						in.value(str);
+					}
+					lsPredicates.add(in);
+				}
 				Predicate[] p = new Predicate[lsPredicates.size()];  
                 return cb.and(lsPredicates.toArray(p));
 			}
 		};
-//		return dao.queryPagefindAll(specification, pageable);
 		return dao.findAll(specification, pageable);
 	}
 }

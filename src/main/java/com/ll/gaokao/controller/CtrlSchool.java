@@ -49,6 +49,20 @@ public class CtrlSchool {
 			return ResultJson.FALSE;
 		}
 	}
+	
+	/**
+	 * 获取所有学校性质
+	 * @return
+	 */
+	@RequestMapping(value = "getAllSchoolNature")
+	@ResponseBody
+	public ResultJson getAllSchoolNature() {
+		try {
+			return ResultJson.trueState("获取成功！", mgmtSchool.findAllSchoolNature());
+		} catch (Exception e) {
+			return ResultJson.FALSE;
+		}
+	}
 
 	/**
 	 * 分页获取学校列表
@@ -63,7 +77,7 @@ public class CtrlSchool {
 			String schoolType, 
 			String province, 
 			String schoolProperty, 
-			String specialProps) {
+			String schoolNature) {
 		Map<String, String> sort = pageModel.getSort();
 		sort.clear();
 		sort.put("ranking", Direction.ASC.toString());
@@ -72,7 +86,7 @@ public class CtrlSchool {
 				JSON.parseArray(schoolType, String.class),
 				JSON.parseArray(province, String.class), 
 				JSON.parseArray(schoolProperty, String.class), 
-				JSON.parseArray(specialProps, String.class));
+				JSON.parseArray(schoolNature, String.class));
 		return BGDataGrid.newInstance(page);
 	}
 
