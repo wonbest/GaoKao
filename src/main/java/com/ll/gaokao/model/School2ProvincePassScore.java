@@ -7,46 +7,33 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 专业分数线数据类型
+ * 学校在各省的分数线
  * 
  * @author LL
  *
  */
 @Entity
-@Table(name = "major_pass_score")
-public class MajorPassScore {
+@Table(name = "school_pass_score")
+public class School2ProvincePassScore {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
 	private String schoolid;
-
 	private String schoolname;
-
-	private String specialtyname;
-
 	private String localprovince;
-
+	private String province;
 	private String studenttype;
-
 	private String year;
-
 	private String batch;
-
 	private String var;
-
 	private String var_score;
-
 	private String max;
-
 	private String min;
-
-	private String zyid;
-
+	private String num;
+	private String fencha;
+	private String provincescore;
 	private String url;
-
-	private String seesign;
 
 	public Integer getId() {
 		return id;
@@ -72,20 +59,20 @@ public class MajorPassScore {
 		this.schoolname = schoolname;
 	}
 
-	public String getSpecialtyname() {
-		return specialtyname;
-	}
-
-	public void setSpecialtyname(String specialtyname) {
-		this.specialtyname = specialtyname;
-	}
-
 	public String getLocalprovince() {
 		return localprovince;
 	}
 
 	public void setLocalprovince(String localprovince) {
 		this.localprovince = localprovince;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
 	}
 
 	public String getStudenttype() {
@@ -144,12 +131,28 @@ public class MajorPassScore {
 		this.min = min;
 	}
 
-	public String getZyid() {
-		return zyid;
+	public String getNum() {
+		return num;
 	}
 
-	public void setZyid(String zyid) {
-		this.zyid = zyid;
+	public void setNum(String num) {
+		this.num = num;
+	}
+
+	public String getFencha() {
+		return fencha;
+	}
+
+	public void setFencha(String fencha) {
+		this.fencha = fencha;
+	}
+
+	public String getProvincescore() {
+		return provincescore;
+	}
+
+	public void setProvincescore(String provincescore) {
+		this.provincescore = provincescore;
 	}
 
 	public String getUrl() {
@@ -159,21 +162,4 @@ public class MajorPassScore {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
-	public String getSeesign() {
-		return seesign;
-	}
-
-	public void setSeesign(String seesign) {
-		this.seesign = seesign;
-	}
-
-	@Override
-	public String toString() {
-		return "MajorPassScore [schoolid=" + schoolid + ", schoolname=" + schoolname + ", specialtyname="
-				+ specialtyname + ", localprovince=" + localprovince + ", studenttype=" + studenttype + ", year=" + year
-				+ ", batch=" + batch + ", var=" + var + ", var_score=" + var_score + ", max=" + max + ", min=" + min
-				+ ", zyid=" + zyid + ", url=" + url + ", seesign=" + seesign + "]";
-	}
-
 }

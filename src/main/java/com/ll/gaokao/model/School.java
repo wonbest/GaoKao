@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 教育在线网 school模型
+ * school模型
  * 
  * @author LL
  *

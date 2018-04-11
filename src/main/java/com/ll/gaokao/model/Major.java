@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 教育在线 网 专业数据类型
+ * 专业数据类型
  * 
  * @author LL
  *

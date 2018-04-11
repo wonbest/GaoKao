@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 教育在线网 历年分数线模型
+ * 历年各省分数线模型
  * 
  * @author LL
  *

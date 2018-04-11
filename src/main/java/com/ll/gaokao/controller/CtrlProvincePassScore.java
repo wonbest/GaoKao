@@ -9,8 +9,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ll.gaokao.service.MgmtPassScore;
 import com.ll.gaokao.util.ResultJson;
 
+/**
+ * 各省省控线
+ * 
+ * @author LL
+ *
+ */
 @Controller
-public class CtrlPassScore {
+public class CtrlProvincePassScore {
 	@Autowired
 	private MgmtPassScore mgmtPassScore;
 	
