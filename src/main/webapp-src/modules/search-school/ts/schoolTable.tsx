@@ -80,8 +80,10 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
         pager.pageSize = pagination.pageSize
         this.setState({
             pagination: pager,
+        }, () => {
+            this.fetch()
         })
-        this.fetch()
+
     }
 
     /** 加载学校列表 */
@@ -109,46 +111,54 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
 
     /** 监控工具栏过滤条件变化 */
     handleOptionOnClick = (tag: string, checked: boolean, prop: string) => {
-        switch (prop) {
-            case 'province':
-                this.setState({
-                    provinceSelectedTags: checked
-                        ? [...this.state.provinceSelectedTags, tag]
-                        : this.state.provinceSelectedTags.filter(t => t !== tag)
-                }, () => {
-                    this.fetch()
-                })
-                break
-            case 'type':
-                this.setState({
-                    typeSelectedTags: checked
-                        ? [...this.state.typeSelectedTags, tag]
-                        : this.state.typeSelectedTags.filter(t => t !== tag)
-                }, () => {
-                    this.fetch()
-                })
-                break
-            case 'education':
-                this.setState({
-                    educationSelectedTags: checked
-                        ? [...this.state.educationSelectedTags, tag]
-                        : this.state.educationSelectedTags.filter(t => t !== tag)
-                }, () => {
-                    this.fetch()
-                })
-                break
-            case 'schoolNature':
-                this.setState({
-                    schoolNatureSelectedTags: checked
-                        ? [...this.state.schoolNatureSelectedTags, tag]
-                        : this.state.schoolNatureSelectedTags.filter(t => t !== tag)
-                }, () => {
-                    this.fetch()
-                })
-                break
-            default:
-                break
-        }
+        this.setState({
+            pagination: {
+                current: 1,
+                pageSize: 10,
+                total: 100
+            }
+        }, () => {
+            switch (prop) {
+                case 'province':
+                    this.setState({
+                        provinceSelectedTags: checked
+                            ? [...this.state.provinceSelectedTags, tag]
+                            : this.state.provinceSelectedTags.filter(t => t !== tag)
+                    }, () => {
+                        this.fetch()
+                    })
+                    break
+                case 'type':
+                    this.setState({
+                        typeSelectedTags: checked
+                            ? [...this.state.typeSelectedTags, tag]
+                            : this.state.typeSelectedTags.filter(t => t !== tag)
+                    }, () => {
+                        this.fetch()
+                    })
+                    break
+                case 'education':
+                    this.setState({
+                        educationSelectedTags: checked
+                            ? [...this.state.educationSelectedTags, tag]
+                            : this.state.educationSelectedTags.filter(t => t !== tag)
+                    }, () => {
+                        this.fetch()
+                    })
+                    break
+                case 'schoolNature':
+                    this.setState({
+                        schoolNatureSelectedTags: checked
+                            ? [...this.state.schoolNatureSelectedTags, tag]
+                            : this.state.schoolNatureSelectedTags.filter(t => t !== tag)
+                    }, () => {
+                        this.fetch()
+                    })
+                    break
+                default:
+                    break
+            }
+        })
     }
 
     /** 封装加载数据参数 */

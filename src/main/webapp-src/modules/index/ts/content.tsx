@@ -13,6 +13,7 @@ import Nav from '../../public/ts/nav'
 import PageHeader from '../../public/ts/page-header'
 import SearchSchool from '../../search-school/ts/app'
 import SearchMajor from '../../search-major/ts/app'
+import SearchPassScore from '../../search-pass-score/ts/app'
 
 interface ContentProps {
     store: any
@@ -36,6 +37,11 @@ export default class Content extends React.Component<ContentProps, any> {
             case 's_major':
                 this.setState({
                     content: <SearchMajor />
+                })
+                break
+            case 's_pass_score':
+                this.setState({
+                    content: <SearchPassScore />
                 })
                 break
             default:

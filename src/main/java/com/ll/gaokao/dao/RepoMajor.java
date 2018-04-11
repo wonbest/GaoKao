@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.ll.gaokao.model.Major;
 
 public interface RepoMajor extends JpaRepository<Major, String> {
+	
 	public Page<Major> findAll(Specification<Major> specification, Pageable pageable);
 	
 	@Query(value="select distinct zytype from major", nativeQuery=true)

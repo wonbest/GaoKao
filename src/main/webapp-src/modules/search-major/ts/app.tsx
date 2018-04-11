@@ -62,34 +62,44 @@ export default class SearchMajor extends React.Component<SearchMajorProps, Searc
         pager.pageSize = pagination.pageSize
         this.setState({
             pagination: pager,
+        }, ()=>{
+            this.fetch()
         })
-        this.fetch()
+        
     }
 
     /** 监控工具栏过滤条件变化 */
     handleOptionOnClick = (tag: string, checked: boolean, prop: string) => {
-        switch (prop) {
-            case 'majorType':
-                this.setState({
-                    majorTypeSelectedTags: checked
-                        ? [...this.state.majorTypeSelectedTags, tag]
-                        : this.state.majorTypeSelectedTags.filter(t => t !== tag)
-                }, () => {
-                    this.fetch()
-                })
-                break
-            case 'majorLevel':
-                this.setState({
-                    majorLevelSelectedTags: checked
-                        ? [...this.state.majorLevelSelectedTags, tag]
-                        : this.state.majorLevelSelectedTags.filter(t => t !== tag)
-                }, () => {
-                    this.fetch()
-                })
-                break
-            default:
-                break
-        }
+        this.setState({
+            pagination: {
+                current: 1,
+                pageSize: 10,
+                total: 100
+            }
+        }, () => {
+            switch (prop) {
+                case 'majorType':
+                    this.setState({
+                        majorTypeSelectedTags: checked
+                            ? [...this.state.majorTypeSelectedTags, tag]
+                            : this.state.majorTypeSelectedTags.filter(t => t !== tag)
+                    }, () => {
+                        this.fetch()
+                    })
+                    break
+                case 'majorLevel':
+                    this.setState({
+                        majorLevelSelectedTags: checked
+                            ? [...this.state.majorLevelSelectedTags, tag]
+                            : this.state.majorLevelSelectedTags.filter(t => t !== tag)
+                    }, () => {
+                        this.fetch()
+                    })
+                    break
+                default:
+                    break
+            }
+        })
     }
 
     fetchMajorDataSource = (params = {}) => {

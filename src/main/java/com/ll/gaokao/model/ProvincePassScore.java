@@ -14,7 +14,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "pass_score")
-public class PassScore {
+public class ProvincePassScore {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
