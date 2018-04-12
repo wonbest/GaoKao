@@ -2,59 +2,32 @@ import * as React from 'react'
 import * as ReactDom from 'react-dom'
 
 import { Card, Avatar } from 'antd'
-import { List } from 'antd'
+import { List, Tooltip } from 'antd'
 
+interface HotSchoolProps {
+
+}
 interface HotSchoolStates {
     dataSource: any[]
 }
-export default class HotSchool extends React.Component<any, HotSchoolStates> {
+export default class HotSchool extends React.Component<HotSchoolProps, HotSchoolStates> {
     state: HotSchoolStates = {
         dataSource: []
     }
 
-    private testData = [
-        {
-            title: 'Ant Design Title 1',
-        },
-        {
-            title: 'Ant Design Title 2',
-        },
-        {
-            title: 'Ant Design Title 3',
-        },
-        {
-            title: 'Ant Design Title 4',
-        },
-        ,
-        {
-            title: 'Ant Design Title 2',
-        },
-        {
-            title: 'Ant Design Title 3',
-        },
-        {
-            title: 'Ant Design Title 4',
-        },
-        ,
-        {
-            title: 'Ant Design Title 2',
-        },
-        {
-            title: 'Ant Design Title 3',
-        },
-        {
-            title: 'Ant Design Title 4',
-        },
-    ]
-
     fetchDataSource = (params = {}) => {
         $.ajax({
-            url: '',
+            url: 'getHotSchool',
+            data: {
+                ...params
+            },
             type: 'post',
             success: (data) => {
-                this.setState({
-                    dataSource: this.testData
-                })
+                if (data.state) {
+                    this.setState({
+                        dataSource: data.result
+                    })
+                }
             }
         })
     }
@@ -68,15 +41,18 @@ export default class HotSchool extends React.Component<any, HotSchoolStates> {
             <Card title="热门高校">
                 <List
                     dataSource={this.state.dataSource}
-                    renderItem={item => {
+                    renderItem={item => (
                         <List.Item>
                             <List.Item.Meta
-                                avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                title={<a href="https://ant.design">{item.title}</a>}
-                                description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                                avatar={<Avatar size="large" src={"https://gkcx.eol.cn/upload/schoollogo/" + item.schoolid + ".jpg"} />}
+                                title={<a href={item.guanwang} target="blank" >{item.schoolname}</a>}
+                                description={<Tooltip title={item.jianjie}>
+                                    <span className="ellipsis">{item.jianjie}</span>
+                                </Tooltip>}
                             />
                         </List.Item>
-                    }} />
+                    )}
+                />
             </Card>
         )
     }

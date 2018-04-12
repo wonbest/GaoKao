@@ -1,6 +1,7 @@
 package com.ll.gaokao.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -43,7 +44,14 @@ public class MgmtSchool {
 	}
 	
 	public List<School> findHot() {
-		return dao.findTop5();
+		List<School> lsSchools = dao.findAll();
+		lsSchools.sort(new Comparator<School>() {
+			@Override
+			public int compare(School s1, School s2) {
+				return Integer.parseInt(s2.getClicks()) - Integer.parseInt(s1.getClicks());
+			}
+		});
+		return lsSchools.subList(0, 8);
 	}
 	
 	public Page<School> queryPageFindAll(

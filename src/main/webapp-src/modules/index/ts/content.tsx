@@ -58,11 +58,11 @@ export default class Content extends React.Component<ContentProps, any> {
                 <Row>
                     <Nav onChange={this.changePage} />
                 </Row>
-                <Row>
+                <Row gutter={16} >
                     <Col span={14} offset={2}>
                         {this.state.content}
                     </Col>
-                    <Col span={7} offset={1}>
+                    <Col span={6}>
                         <PageRight />
                     </Col>
                 </Row>

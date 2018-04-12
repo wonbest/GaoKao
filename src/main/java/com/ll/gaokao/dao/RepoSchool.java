@@ -23,7 +23,7 @@ public interface RepoSchool extends JpaRepository<School, String> {
 
 	public Page<School> findAll(Specification<School> specification, Pageable pageable);
 
-	@Query(value = "select * from school order by clicks", nativeQuery = true)
-	public List<School> findTop5();
+//	@Query(value = "select * from school order by clicks+0 desc", nativeQuery = true)
+//	public List<School> findTop5();
 
 }
