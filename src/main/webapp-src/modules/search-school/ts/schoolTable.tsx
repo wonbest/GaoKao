@@ -53,23 +53,28 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
         {
             title: '学校名称',
             dataIndex: '',
+            width: '20%',
             render: text => <a href={text.guanwang} target="blank" >{text.schoolname}</a>
         },
         {
             title: '所在省份',
-            dataIndex: 'province'
+            dataIndex: 'province',
+            width: '20%'
         },
         {
             title: '院校类型',
-            dataIndex: 'schoolproperty'
+            dataIndex: 'schoolproperty',
+            width: '20%'
         },
         {
             title: '院校性质',
-            dataIndex: 'schoolnature'
+            dataIndex: 'schoolnature',
+            width: '20%'
         },
         {
             title: '学历层次',
-            dataIndex: 'schooltype'
+            dataIndex: 'schooltype',
+            width: '20%'
         }
     ]
 

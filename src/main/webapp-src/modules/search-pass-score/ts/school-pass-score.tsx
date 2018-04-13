@@ -50,17 +50,17 @@ export default class SchoolPassScore extends React.Component<SchoolPassScoreProp
         {
             title: '学校名称',
             dataIndex: 'schoolname',
-            width: '15%'
+            width: '12%'
         },
         {
             title: '招生地区',
             dataIndex: 'localprovince',
-            width: '10%'
+            width: '13%'
         },
         {
             title: '考生地区',
             dataIndex: 'province',
-            width: '10%'
+            width: '13%'
         },
         {
             title: '文理科',
@@ -70,22 +70,28 @@ export default class SchoolPassScore extends React.Component<SchoolPassScoreProp
         {
             title: '年份',
             dataIndex: 'year',
-            width: '10%'
+            width: '9%'
         },
         {
             title: '录取批次',
             dataIndex: 'batch',
-            width: '15%'
+            width: '13%'
         },
         {
             title: '最高分',
             dataIndex: 'max',
-            width: '10%'
+            width: '10%',
+            render: (text)=> {
+                return <span>{text === '[]' ? '--' : text}</span>
+            }
         },
         {
             title: '最低分',
             dataIndex: 'min',
-            width: '10%'
+            width: '10%',
+            render: (text)=> {
+                return <span>{text === '[]' ? '--' : text}</span>
+            }
         },
         {
             title: '省控线',
@@ -282,7 +288,7 @@ export default class SchoolPassScore extends React.Component<SchoolPassScoreProp
                 <Table
                     rowKey={record => record.id}
                     columns={this.columns}
-                    // onChange={this.handleTableOnChange}
+                    onChange={this.handleTableOnChange}
                     pagination={this.state.pagination}
                     dataSource={this.state.dataSource}
                     loading={this.state.loading}

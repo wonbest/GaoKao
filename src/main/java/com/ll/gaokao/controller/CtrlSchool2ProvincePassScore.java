@@ -1,5 +1,7 @@
 package com.ll.gaokao.controller;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -35,6 +37,30 @@ public class CtrlSchool2ProvincePassScore {
 		}
 	}
 	
+	/**
+	 * 查找所有生源地数据
+	 * @return
+	 */
+	@RequestMapping(value="getLocalProvince")
+	@ResponseBody
+	public ResultJson getLocalProvince() {
+		try {
+			return ResultJson.trueState("获取成功！", mgmtSchool2ProvincePassScore.findLocalProvince());
+		} catch (Exception e) {
+			return ResultJson.FALSE;
+		}
+	}
+	
+	/**
+	 * 动态查询
+	 * @param pageModel
+	 * @param schoolProvince
+	 * @param studentProvince
+	 * @param studentType
+	 * @param year
+	 * @param batch
+	 * @return
+	 */
 	@RequestMapping(value="getSchoolPassScore")
 	@ResponseBody
 	public BGDataGrid getSchoolPassScore(

@@ -6,11 +6,19 @@ import { Link } from 'react-router-dom'
 import { Affix, Button } from 'antd'
 import { Row, Col } from 'antd'
 import { Divider } from 'antd'
+import { Menu } from 'antd'
 
 interface NavProps {
-    onChange: (param: string)=>void
+    onChange: (param: string) => void
 }
-export default class Nav extends React.Component<NavProps, any> {
+interface NavStates {
+    current: string
+}
+export default class Nav extends React.Component<NavProps, NavStates> {
+    state: NavStates = {
+        current: 's_school'
+    }
+
     private rowStyle: React.CSSProperties = {
         backgroundColor: '#108ee9',
         width: '100%',
@@ -23,8 +31,26 @@ export default class Nav extends React.Component<NavProps, any> {
         fontSize: '18px'
     }
 
+    private colStyle: React.CSSProperties = {
+        textAlign: 'center',
+        maxHeight: '40px',
+    }
+
     handleNavOnClick = (key: string) => {
-        this.props.onChange(key)
+        this.setState({
+            current: key
+        }, () => {
+            this.props.onChange(key)
+        })
+    }
+
+    checkSelected = (value: string) => {
+        let css = {
+            textAlign: 'center',
+            backgroundColor: '#0000EE',
+            maxHeight: '40px',
+        }
+        return this.state.current === value ? css : this.colStyle
     }
 
     render() {
@@ -38,28 +64,28 @@ export default class Nav extends React.Component<NavProps, any> {
                             首页
                         </a>
                     </Col> */}
-                    <Col span={2} offset={2}>
+                    <Col span={2} offset={2} style={this.checkSelected("s_school")}>
                         <a
                             onClick={this.handleNavOnClick.bind(this, 's_school')}
                             style={this.aStyle}>
                             查学校
                         </a>
                     </Col>
-                    <Col span={2}>
+                    <Col span={2} style={this.checkSelected("s_major")}>
                         <a
                             onClick={this.handleNavOnClick.bind(this, 's_major')}
                             style={this.aStyle}>
                             查专业
                         </a>
                     </Col>
-                    <Col span={2}>
+                    <Col span={2} style={this.checkSelected("s_pass_score")}>
                         <a
                             onClick={this.handleNavOnClick.bind(this, 's_pass_score')}
                             style={this.aStyle}>
                             查分数线
                         </a>
                     </Col>
-                    <Col span={2}>
+                    <Col span={2} style={this.checkSelected("wish")}>
                         <a
                             onClick={this.handleNavOnClick.bind(this, 'wish')}
                             style={this.aStyle}>

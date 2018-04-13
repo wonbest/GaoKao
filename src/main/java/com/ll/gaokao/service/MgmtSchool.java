@@ -27,14 +27,29 @@ public class MgmtSchool {
 	@Autowired
 	private RepoSchool dao;
 	
+	/**
+	 * 查询学校的学历层次
+	 * 普通本科 高职高专...
+	 * @return
+	 */
 	public List<String> findAllSchooltype() {
 		return dao.findAllSchooltype();
 	}
 	
+	/**
+	 * 查询学校属性
+	 * 农林类  理工类...
+	 * @return
+	 */
 	public List<String> findAllSchoolProperty() {
 		return dao.findAllSchoolproperty();
 	}
 	
+	/**
+	 * 查询学校性质
+	 * 公办 民办..
+	 * @return
+	 */
 	public List<String> findAllSchoolNature() {
 		return dao.findAllSchoolNature();
 	}
@@ -54,6 +69,15 @@ public class MgmtSchool {
 		return lsSchools.subList(0, 8);
 	}
 	
+	/**
+	 * 动态查询
+	 * @param pageable
+	 * @param schoolType
+	 * @param province
+	 * @param schoolProperty
+	 * @param schoolNature
+	 * @return
+	 */
 	public Page<School> queryPageFindAll(
 			Pageable pageable, 
 			List<String> schoolType, 

@@ -36,23 +36,28 @@ export default class SearchMajor extends React.Component<SearchMajorProps, Searc
     private columns = [
         {
             title: '专业名称',
-            dataIndex: 'specialname'
+            dataIndex: 'specialname',
+            width: '20%'
         },
         {
             title: '专业类别',
-            dataIndex: 'zytype'
+            dataIndex: 'zytype',
+            width: '20%'
         },
         {
             title: '全国报考热度',
-            dataIndex: 'ranking'
+            dataIndex: 'ranking',
+            width: '20%'
         },
         {
             title: '同类报考热度',
-            dataIndex: 'rankingType'
+            dataIndex: 'rankingType',
+            width: '20%'
         },
         {
             title: '专业层次',
-            dataIndex: 'zycengci'
+            dataIndex: 'zycengci',
+            width: '20%'
         }
     ]
 

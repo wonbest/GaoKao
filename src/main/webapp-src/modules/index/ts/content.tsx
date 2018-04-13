@@ -14,6 +14,7 @@ import PageHeader from '../../public/ts/page-header'
 import SearchSchool from '../../search-school/ts/app'
 import SearchMajor from '../../search-major/ts/app'
 import SearchPassScore from '../../search-pass-score/ts/app'
+import Wish from '../../wish/ts/app'
 
 interface ContentProps {
     store: any
@@ -44,6 +45,11 @@ export default class Content extends React.Component<ContentProps, any> {
                     content: <SearchPassScore />
                 })
                 break
+            case 'wish':
+                this.setState({
+                    content: <Wish />
+                })
+                break
             default:
                 break
         }
@@ -58,7 +64,7 @@ export default class Content extends React.Component<ContentProps, any> {
                 <Row>
                     <Nav onChange={this.changePage} />
                 </Row>
-                <Row gutter={16} >
+                <Row gutter={16} style={{marginTop: '5px'}} >
                     <Col span={14} offset={2}>
                         {this.state.content}
                     </Col>

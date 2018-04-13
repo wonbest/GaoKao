@@ -48,6 +48,14 @@ public class MgmtSchool2ProvincePassScore {
 		return map;
 	}
 	
+	/**
+	 * 查找生源地
+	 * @return
+	 */
+	public List<String> findLocalProvince() {
+		return dao.findStudentProvince();
+	}
+	
 	public Page<School2ProvincePassScore> queryPageFindAll(
 			Pageable pageable, 
 			List<String> schoolProvince,
