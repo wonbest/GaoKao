@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import com.ll.gaokao.dao.RepoMajor;
 import com.ll.gaokao.model.Major;
-import com.ll.gaokao.model.School;
 
 @Service
 public class MgmtMajor {

@@ -58,7 +58,7 @@ export default class SchoolPassScore extends React.Component<SchoolPassScoreProp
             width: '13%'
         },
         {
-            title: '考生地区',
+            title: '院校省份',
             dataIndex: 'province',
             width: '13%'
         },

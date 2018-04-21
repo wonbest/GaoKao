@@ -1,7 +1,5 @@
 package com.ll.gaokao.controller;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -9,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
-import com.ll.gaokao.model.School;
 import com.ll.gaokao.model.School2ProvincePassScore;
 import com.ll.gaokao.service.MgmtSchool2ProvincePassScore;
 import com.ll.gaokao.util.BGDataGrid;

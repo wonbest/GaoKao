@@ -103,18 +103,5 @@ public class CtrlSchool {
 			return ResultJson.FALSE;
 		}
 	}
-
-//	/**
-//	 * 测试动态条件查询
-//	 * @return
-//	 */
-//	@RequestMapping(value = "testPage")
-//	@ResponseBody
-//	public BGDataGrid testPage() {
-//		BGPageModel pageModel = new BGPageModel();
-//		pageModel.setCurrent(1);
-//		pageModel.setRowCount(10);
-//		Page<School> page = mgmtSchool.queryPageFindAll(pageModel.bePageable(), "陕西", "");
-//		return BGDataGrid.newInstance(page);
-//	}
+	
 }
