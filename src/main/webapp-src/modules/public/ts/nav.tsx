@@ -68,14 +68,14 @@ export default class Nav extends React.Component<NavProps, NavStates> {
                         <a
                             onClick={this.handleNavOnClick.bind(this, 's_school')}
                             style={this.aStyle}>
-                            查学校
+                            选学校
                         </a>
                     </Col>
                     <Col span={2} style={this.checkSelected("s_major")}>
                         <a
                             onClick={this.handleNavOnClick.bind(this, 's_major')}
                             style={this.aStyle}>
-                            查专业
+                            选专业
                         </a>
                     </Col>
                     <Col span={2} style={this.checkSelected("s_pass_score")}>
