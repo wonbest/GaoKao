@@ -29,14 +29,17 @@ interface ToolbarStates {
 @observer
 export default class Toolbar extends React.Component<ToolbarProps, ToolbarStates> {
 
-    state: ToolbarStates = {
-        provinceData: [],
-        schoolTypeData: [],
-        educationData: [],
-        provinceSelectedTags: [],
-        typeSelectedTags: [],
-        educationSelectedTags: [],
-        specialSelectedTags: []
+    constructor(props) {
+        super(props)
+        this.state = {
+            provinceData: [],
+            schoolTypeData: [],
+            educationData: [],
+            provinceSelectedTags: [],
+            typeSelectedTags: [],
+            educationSelectedTags: [],
+            specialSelectedTags: []
+        }
     }
 
     private specialProps = ['985', '211']

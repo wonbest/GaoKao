@@ -24,23 +24,26 @@ interface ProvincePassScoreStates {
 }
 export default class ProvincePassScore extends React.Component<ProvincePassScoreProps, ProvincePassScoreStates> {
 
-    state: ProvincePassScoreStates = {
-        yearTagsData: [],
-        yearSelectedTags: [],
-        typeTagsData: [],
-        typeSelectedTags: [],
-        batchTagsData: [],
-        batchSelectedTags: [],
-        provinceTagsData: [],
-        provinceSelectedTags: [],
+    constructor(props) {
+        super(props)
+        this.state = {
+            yearTagsData: [],
+            yearSelectedTags: [],
+            typeTagsData: [],
+            typeSelectedTags: [],
+            batchTagsData: [],
+            batchSelectedTags: [],
+            provinceTagsData: [],
+            provinceSelectedTags: [],
 
-        passScoreDataSource: [],
-        pagination: {
-            current: 1,
-            pageSize: 10,
-            total: 100
-        },
-        loading: true
+            passScoreDataSource: [],
+            pagination: {
+                current: 1,
+                pageSize: 10,
+                total: 100
+            },
+            loading: true
+        }
     }
 
     private columns = [

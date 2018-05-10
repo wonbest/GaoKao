@@ -15,8 +15,12 @@ interface NavStates {
     current: string
 }
 export default class Nav extends React.Component<NavProps, NavStates> {
-    state: NavStates = {
-        current: 's_school'
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            current: 's_school'
+        }
     }
 
     private rowStyle: React.CSSProperties = {

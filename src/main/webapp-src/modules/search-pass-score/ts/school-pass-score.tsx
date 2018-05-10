@@ -25,25 +25,29 @@ interface SchoolPassScoreStates {
     yearSelectedTags: any[]
 }
 export default class SchoolPassScore extends React.Component<SchoolPassScoreProps, SchoolPassScoreStates> {
-    state: SchoolPassScoreStates = {
-        dataSource: [],
-        pagination: {
-            current: 1,
-            pageSize: 10,
-            total: 100
-        },
-        loading: true,
 
-        schoolProvinceTagsData: [],
-        schoolProvinceSelectedTags: [],
-        studentProvinceTagsData: [],
-        studentProvinceSelectedTags: [],
-        batchTagsData: [],
-        batchSelectedTags: [],
-        studentTypeTagsData: [],
-        studentTypeSelectedTags: [],
-        yearTagsData: [],
-        yearSelectedTags: []
+    constructor(props) {
+        super(props)
+        this.state = {
+            dataSource: [],
+            pagination: {
+                current: 1,
+                pageSize: 10,
+                total: 100
+            },
+            loading: true,
+
+            schoolProvinceTagsData: [],
+            schoolProvinceSelectedTags: [],
+            studentProvinceTagsData: [],
+            studentProvinceSelectedTags: [],
+            batchTagsData: [],
+            batchSelectedTags: [],
+            studentTypeTagsData: [],
+            studentTypeSelectedTags: [],
+            yearTagsData: [],
+            yearSelectedTags: []
+        }
     }
 
     private columns = [
@@ -81,7 +85,7 @@ export default class SchoolPassScore extends React.Component<SchoolPassScoreProp
             title: '最高分',
             dataIndex: 'max',
             width: '10%',
-            render: (text)=> {
+            render: (text) => {
                 return <span>{text === '[]' ? '--' : text}</span>
             }
         },
@@ -89,7 +93,7 @@ export default class SchoolPassScore extends React.Component<SchoolPassScoreProp
             title: '最低分',
             dataIndex: 'min',
             width: '10%',
-            render: (text)=> {
+            render: (text) => {
                 return <span>{text === '[]' ? '--' : text}</span>
             }
         },

@@ -8,3 +8,32 @@ export default class MajorPassScore extends React.Component<any, any> {
         )
     }
 }
+
+interface ToolBarProps {
+    onSubmit: () => void
+}
+interface ToolBarStates {
+    majorTypeTagsData: any[]
+    majorTypeSelectedTags: any[]
+
+    schoolProvinceTagsData: any[]
+    schoolProvinceSelectedTags: any[]
+
+    schoolTypeTagsData: any[]
+    schoolTypeSelectedTags: any[]
+
+    educationTagsData: any[]
+    educationSelectedTags: any[]
+
+    batchTagsData: any[]
+    batchSelectedTags: any[]
+
+    yearTagsData: any[]
+    yearSelectedTags: any[]
+
+}
+class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
+    constructor(props) {
+        super(props)
+    }
+}

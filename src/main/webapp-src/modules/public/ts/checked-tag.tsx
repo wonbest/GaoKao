@@ -11,8 +11,11 @@ interface CheckedTagStates {
 }
 export default class CheckedTag extends React.Component<CheckedTagProps, CheckedTagStates> {
 
-    state: CheckedTagStates = {
-        checked: false
+    constructor(props) {
+        super(props)
+        this.state = {
+            checked: false
+        }
     }
 
     handleOnChange = (value) => {

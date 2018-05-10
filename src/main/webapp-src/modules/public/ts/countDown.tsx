@@ -14,9 +14,12 @@ interface CountDownStates {
 }
 export default class CountDown extends React.Component<CountDownProps, CountDownStates> {
 
-    state: CountDownStates = {
-        year: '',
-        days: ''
+    constructor(props) {
+        super(props)
+        this.state = {
+            year: '',
+            days: ''
+        }
     }
 
     componentDidMount() {
@@ -35,14 +38,7 @@ export default class CountDown extends React.Component<CountDownProps, CountDown
             fontSize: '25px',
         }
         return (
-            <div style={{
-                // border: '1px solid #e8e8e8',
-                // height: 50,
-                // width: 300,
-                // padding: '0 10',
-                // margin: 0,
-                // textAlign: 'center'
-            }}>
+            <div>
                 距离
                 <span style={style}>{this.state.year}</span>
                 年高考还有

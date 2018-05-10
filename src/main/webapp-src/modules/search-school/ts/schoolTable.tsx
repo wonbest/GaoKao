@@ -30,23 +30,27 @@ interface SchoolTableStates {
 }
 @observer
 export default class SchoolTable extends React.Component<SchoolTableProps, SchoolTableStates> {
-    state: SchoolTableStates = {
-        dataSource: [],
-        pagination: {
-            current: 1,
-            pageSize: 10,
-            total: 100
-        },
-        loading: true,
 
-        provinceData: [],
-        schoolTypeData: [],
-        educationData: [],
-        schoolNatureData: [],
-        provinceSelectedTags: [],
-        typeSelectedTags: [],
-        educationSelectedTags: [],
-        schoolNatureSelectedTags: []
+    constructor(props) {
+        super(props)
+        this.state = {
+            dataSource: [],
+            pagination: {
+                current: 1,
+                pageSize: 10,
+                total: 100
+            },
+            loading: true,
+
+            provinceData: [],
+            schoolTypeData: [],
+            educationData: [],
+            schoolNatureData: [],
+            provinceSelectedTags: [],
+            typeSelectedTags: [],
+            educationSelectedTags: [],
+            schoolNatureSelectedTags: []
+        }
     }
 
     private columns = [
@@ -64,12 +68,14 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
         {
             title: '院校类型',
             dataIndex: 'schoolproperty',
-            width: '20%'
+            width: '20%',
+            render: text => <span>{text === '[]' ? '' : text}</span>
         },
         {
             title: '院校性质',
             dataIndex: 'schoolnature',
-            width: '20%'
+            width: '20%',
+            render: text => <span>{text === '[]' ? '' : text}</span>
         },
         {
             title: '学历层次',

@@ -11,8 +11,12 @@ interface HotSchoolStates {
     dataSource: any[]
 }
 export default class HotSchool extends React.Component<HotSchoolProps, HotSchoolStates> {
-    state: HotSchoolStates = {
-        dataSource: []
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            dataSource: []
+        }
     }
 
     fetchDataSource = (params = {}) => {

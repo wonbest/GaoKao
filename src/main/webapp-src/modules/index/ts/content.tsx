@@ -23,9 +23,13 @@ interface ContentStates {
     content: any
 }
 @observer
-export default class Content extends React.Component<ContentProps, any> {
-    state = {
-        content: <SearchSchool store={this.props.store} />
+export default class Content extends React.Component<ContentProps, ContentStates> {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            content: <SearchSchool store={this.props.store} />
+        }
     }
 
     changePage = (page: string) => {
@@ -64,7 +68,7 @@ export default class Content extends React.Component<ContentProps, any> {
                 <Row>
                     <Nav onChange={this.changePage} />
                 </Row>
-                <Row gutter={16} style={{marginTop: '5px'}} >
+                <Row gutter={16} style={{ marginTop: '5px' }} >
                     <Col span={14} offset={2}>
                         {this.state.content}
                     </Col>

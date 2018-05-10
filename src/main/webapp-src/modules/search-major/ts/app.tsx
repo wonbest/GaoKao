@@ -19,18 +19,21 @@ interface SearchMajorStates {
 }
 export default class SearchMajor extends React.Component<SearchMajorProps, SearchMajorStates> {
 
-    state: SearchMajorStates = {
-        majorTypeData: [],
-        majorTypeSelectedTags: [],
-        majorLevelData: [],
-        majorLevelSelectedTags: [],
-        majorDataSource: [],
-        pagination: {
-            current: 1,
-            pageSize: 10,
-            total: 100
-        },
-        loading: true
+    constructor(props) {
+        super(props)
+        this.state = {
+            majorTypeData: [],
+            majorTypeSelectedTags: [],
+            majorLevelData: [],
+            majorLevelSelectedTags: [],
+            majorDataSource: [],
+            pagination: {
+                current: 1,
+                pageSize: 10,
+                total: 100
+            },
+            loading: true
+        }
     }
 
     private columns = [
@@ -67,10 +70,10 @@ export default class SearchMajor extends React.Component<SearchMajorProps, Searc
         pager.pageSize = pagination.pageSize
         this.setState({
             pagination: pager,
-        }, ()=>{
+        }, () => {
             this.fetch()
         })
-        
+
     }
 
     /** 监控工具栏过滤条件变化 */
