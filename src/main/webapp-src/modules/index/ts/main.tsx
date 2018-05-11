@@ -4,7 +4,7 @@ import * as ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
 import * as moment from 'moment'
-import { observer } from 'mobx-react'
+import { Provider } from 'mobx-react'
 
 import Content from './content'
 import store from '../../public/ts/store'
@@ -12,7 +12,9 @@ import store from '../../public/ts/store'
 $(() => {
     ReactDOM.render(
         <BrowserRouter>
-            <Content store={store} />
+            <Provider store={store}>
+                <Content />
+            </Provider>
         </BrowserRouter>
         , document.getElementById("root"))
 })

@@ -1,9 +1,5 @@
-import { observable, action, computed } from 'mobx'
+import tagsStore from '../store/tags-store'
 
-class Store {
-    constructor() {
-
-    }
+export default {
+    tagsStore,
 }
-
-export default new Store()

@@ -5,7 +5,7 @@ import { Switch, Route } from 'react-router-dom'
 
 import { Row, Col } from 'antd'
 
-import { observer } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
 
 import PageRight from '../../public/ts/page-right'
 
@@ -17,18 +17,19 @@ import SearchPassScore from '../../search-pass-score/ts/app'
 import Wish from '../../wish/ts/app'
 
 interface ContentProps {
-    store: any
+    store?: any
 }
 interface ContentStates {
     content: any
 }
+@inject("store")
 @observer
 export default class Content extends React.Component<ContentProps, ContentStates> {
 
     constructor(props) {
         super(props)
         this.state = {
-            content: <SearchSchool store={this.props.store} />
+            content: <SearchSchool store={this.props.store.tagsStore} />
         }
     }
 
@@ -36,7 +37,7 @@ export default class Content extends React.Component<ContentProps, ContentStates
         switch (page) {
             case 's_school':
                 this.setState({
-                    content: <SearchSchool store={this.props.store} />
+                    content: <SearchSchool store={this.props.store.tagsStore} />
                 })
                 break
             case 's_major':
