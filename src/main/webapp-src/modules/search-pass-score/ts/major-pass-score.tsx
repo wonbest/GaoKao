@@ -5,9 +5,10 @@ import { Tag, Card, Row, Col, Icon, Table, Button } from 'antd'
 import { Select, Input } from 'antd'
 
 interface SearchParams {
-    province: string,
-    batch: string,
-    year: string,
+    schoolName: string
+    province: string
+    batch: string
+    year: string
 }
 
 interface MajorPassScoreStates {
@@ -41,6 +42,7 @@ export default class MajorPassScore extends React.Component<any, MajorPassScoreS
                 province: '',
                 batch: '',
                 year: '',
+                schoolName: '',
             },
             loading: false
         }
@@ -48,7 +50,6 @@ export default class MajorPassScore extends React.Component<any, MajorPassScoreS
 
     /** 标签变化事件 */
     handleTagsOnChange = (params: SearchParams) => {
-        console.log(params)
         this.setState({
             searchParams: params
         }, () => {
@@ -110,6 +111,7 @@ export default class MajorPassScore extends React.Component<any, MajorPassScoreS
                 <Table rowKey={(record: any) => record.id}
                     columns={this.columns}
                     dataSource={this.state.dataSource}
+                    loading={this.state.loading}
                     pagination={this.state.pagination}
                     onChange={this.handleTableOnChange} />
             </div>
@@ -121,7 +123,9 @@ interface ToolBarProps {
     onSubmit: (param: SearchParams) => void
 }
 interface ToolBarStates {
-    majorTypeData: any[]
+
+    schoolData: any[]
+    schoolName: string
 
     /** 院校招生地区 */
     schoolProvinceTagsData: any[]
@@ -138,7 +142,8 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
     constructor(props) {
         super(props)
         this.state = {
-            majorTypeData: [],
+            schoolData: [],
+            schoolName: '',
             schoolProvinceTagsData: [],
             schoolProvinceSelectedTags: [],
             batchTagsData: [],
@@ -150,8 +155,8 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
 
     /** 标签onchange事件 */
     handleTagsOnChange = () => {
-        // TODO 添加学校和专业的状态
         let searchParams: SearchParams = {
+            schoolName: this.state.schoolName,
             province: JSON.stringify(this.state.schoolProvinceSelectedTags),
             batch: JSON.stringify(this.state.batchSelectedTags),
             year: JSON.stringify(this.state.yearSelectedTags),
@@ -194,12 +199,12 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
         }
     }
 
-    handleMajorTypeSelectOnChange = e => {
-        console.log(e)
-    }
-
-    handleMajorSelectOnChange = e => {
-        console.log(e)
+    handleSchoolNameOnSearch = value => {
+        this.setState({
+            schoolName: value
+        }, () => {
+            this.handleTagsOnChange()
+        })
     }
 
     /** 创建工具栏搜索条件标签 */
@@ -215,18 +220,6 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
                 </Tag.CheckableTag>)
         })
         return options
-    }
-
-    /** 加载专业类型标签数据源 */
-    fetchMajorType = () => {
-        $.ajax({
-            url: 'findAllMajorType',
-            success: (data) => {
-                this.setState({
-                    majorTypeData: data.result
-                })
-            }
-        })
     }
 
     /** 加载院校招生地区标签数据 */
@@ -267,13 +260,25 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
         })
     }
 
+    /** 查找所有学校 */
+    fetchSchoolName = () => {
+        $.ajax({
+            url: 'getAllSchoolName',
+            success: (data) => {
+                this.setState({
+                    schoolData: data.result
+                })
+            }
+        })
+    }
+
     /** 创建下拉框数据源 */
     buildSelectOptions = (data: any[]) => {
         return data.map(e => <Select.Option key={e}>{e}</Select.Option>)
     }
 
     componentDidMount() {
-        this.fetchMajorType()
+        this.fetchSchoolName()
         this.fetchSchoolProvince()
         this.fetchSeachParams()
         this.fetchBatch()
@@ -283,41 +288,14 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
         return (
             <div>
                 <Card>
-                    <Row style={{ margin: '10px 0px' }} gutter={16}>
-                        <Col span={8}>
-                            <Input placeholder="请输入学校名称" />
-                        </Col>
-                        <Col span={12}>
-                            <Row gutter={8}>
-                                <Col span={12}>
-                                    <Select
-                                        style={{ width: 150 }}
-                                        showSearch
-                                        defaultValue="all"
-                                        onChange={this.handleMajorTypeSelectOnChange}
-                                        placeholder="请选择专业类别"
-                                        filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
-                                        <Select.Option key="all">全部</Select.Option>
-                                        {this.buildSelectOptions(this.state.majorTypeData)}
-                                    </Select>
-                                </Col>
-                                <Col span={12}>
-                                    <Select
-                                        style={{ width: 150 }}
-                                        showSearch
-                                        onChange={this.handleMajorSelectOnChange}
-                                        defaultValue="all"
-                                        placeholder="请选择专业"
-                                        filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
-                                        <Select.Option key="all">全部</Select.Option>
-                                        
-                                    </Select>
-                                </Col>
-                            </Row>
-                        </Col>
-                        <Col span={4}>
-                            <Button type="primary">搜索</Button>
-                        </Col>
+                    <Row style={{ margin: '0px 0px 20px 0px' }} gutter={16}>
+                        <Input.Search
+                            style={{ width: '90%' }}
+                            size="large"
+                            placeholder="请输入学校名称"
+                            onSearch={this.handleSchoolNameOnSearch}
+                            enterButton
+                        />
                     </Row>
                     <Row>
                         <Col span={3}>招生地区</Col>

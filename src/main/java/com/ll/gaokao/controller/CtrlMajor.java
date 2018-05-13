@@ -19,6 +19,11 @@ public class CtrlMajor {
 	@Autowired
 	private MgmtMajor mgmtMajor;
 
+	/**
+	 * 查询专业层次
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value = "findAllMajorLevel")
 	@ResponseBody
 	public ResultJson findAllMajorLevel() {
@@ -29,11 +34,32 @@ public class CtrlMajor {
 		}
 	}
 
+	/**
+	 * 查询专业类型
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value = "findAllMajorType")
 	@ResponseBody
 	public ResultJson findAllMajorType() {
 		try {
 			return ResultJson.trueState("获取成功！", mgmtMajor.findAllMajorType());
+		} catch (Exception e) {
+			return ResultJson.FALSE;
+		}
+	}
+
+	/**
+	 * 根据专业类型获取所有子专业名
+	 * 
+	 * @param majorType
+	 * @return
+	 */
+	@RequestMapping(value = "getMajorByMajorType")
+	@ResponseBody
+	public ResultJson getMajorByMajorType(String majorType) {
+		try {
+			return ResultJson.trueState("获取成功！", mgmtMajor.findByMajorType(majorType));
 		} catch (Exception e) {
 			return ResultJson.FALSE;
 		}

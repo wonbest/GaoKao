@@ -11,6 +11,10 @@ import org.springframework.data.jpa.repository.Query;
 import com.ll.gaokao.model.School;
 
 public interface RepoSchool extends JpaRepository<School, String> {
+
+	@Query(value = "select distinct schoolname from school", nativeQuery = true)
+	public List<String> findAllSchoolName();
+
 	@Query(value = "select distinct schooltype from school", nativeQuery = true)
 	public List<String> findAllSchooltype();
 
@@ -22,7 +26,8 @@ public interface RepoSchool extends JpaRepository<School, String> {
 
 	public Page<School> findAll(Specification<School> specification, Pageable pageable);
 
-//	@Query(value = "select * from school order by clicks+0 desc", nativeQuery = true)
-//	public List<School> findTop5();
+	// @Query(value = "select * from school order by clicks+0 desc", nativeQuery =
+	// true)
+	// public List<School> findTop5();
 
 }

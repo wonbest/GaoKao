@@ -34,6 +34,16 @@ public class MgmtMajor {
 		return dao.findAllMajorType();
 	}
 
+	/**
+	 * 根据专业类型查询所有专业
+	 * 
+	 * @param majorType
+	 * @return
+	 */
+	public List<String> findByMajorType(String majorType) {
+		return dao.findByZytype(majorType);
+	}
+
 	public Page<Major> queryPageBySearchParams(Pageable pageable, List<String> majorType, List<String> majorLevel) {
 		Specification<Major> specification = new Specification<Major>() {
 

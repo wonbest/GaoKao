@@ -24,6 +24,7 @@ public class CtrlSchool {
 
 	/**
 	 * 获取学校学历层次
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "getAllSchoolType")
@@ -38,6 +39,7 @@ public class CtrlSchool {
 
 	/**
 	 * 获取所有学校类型
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "getAllSchoolProperty")
@@ -49,9 +51,10 @@ public class CtrlSchool {
 			return ResultJson.FALSE;
 		}
 	}
-	
+
 	/**
 	 * 获取所有学校性质
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "getAllSchoolNature")
@@ -65,33 +68,42 @@ public class CtrlSchool {
 	}
 
 	/**
-	 * 分页获取学校列表
-	 * 按ranking字段排序
+	 * 查询所有学校名称
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "getAllSchoolName")
+	@ResponseBody
+	public ResultJson getAllSchoolName() {
+		try {
+			return ResultJson.trueState("获取成功！", mgmtSchool.findAllSchoolName());
+		} catch (Exception e) {
+			return ResultJson.FALSE;
+		}
+	}
+
+	/**
+	 * 分页获取学校列表 按ranking字段排序
+	 * 
 	 * @param pageModel
 	 * @return
 	 */
 	@RequestMapping(value = "getSchoolList")
 	@ResponseBody
-	public BGDataGrid getSchoolList(
-			BGPageModel pageModel, 
-			String schoolType, 
-			String province, 
-			String schoolProperty, 
+	public BGDataGrid getSchoolList(BGPageModel pageModel, String schoolType, String province, String schoolProperty,
 			String schoolNature) {
 		Map<String, String> sort = pageModel.getSort();
 		sort.clear();
 		sort.put("ranking", Direction.ASC.toString());
-		Page<School> page = mgmtSchool.queryPageFindAll(
-				pageModel.bePageable(sort),
-				JSON.parseArray(schoolType, String.class),
-				JSON.parseArray(province, String.class), 
-				JSON.parseArray(schoolProperty, String.class), 
-				JSON.parseArray(schoolNature, String.class));
+		Page<School> page = mgmtSchool.queryPageFindAll(pageModel.bePageable(sort),
+				JSON.parseArray(schoolType, String.class), JSON.parseArray(province, String.class),
+				JSON.parseArray(schoolProperty, String.class), JSON.parseArray(schoolNature, String.class));
 		return BGDataGrid.newInstance(page);
 	}
 
 	/**
 	 * 获取热门院校
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "getHotSchool")
@@ -103,5 +115,5 @@ public class CtrlSchool {
 			return ResultJson.FALSE;
 		}
 	}
-	
+
 }

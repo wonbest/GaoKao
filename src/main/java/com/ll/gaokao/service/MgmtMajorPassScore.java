@@ -38,12 +38,9 @@ public class MgmtMajorPassScore {
 	public List<String> findDistinctSpecialTyName() {
 		return dao.findSpecialTyName();
 	}
-	
-	public Page<MajorPassScore> queryPageBySearchParams(
-			Pageable pageable, 
-			List<String> province, 
-			List<String> batch,
-			List<String> year) {
+
+	public Page<MajorPassScore> queryPageBySearchParams(Pageable pageable, List<String> province, List<String> batch,
+			List<String> year, String schoolName) {
 		Specification<MajorPassScore> specification = new Specification<MajorPassScore>() {
 
 			@Override
@@ -51,6 +48,7 @@ public class MgmtMajorPassScore {
 				Path<String> pathProvince = root.get("localprovince");
 				Path<String> pathBatch = root.get("batch");
 				Path<String> pathYear = root.get("year");
+				Path<String> pathSchoolName = root.get("schoolname");
 				List<Predicate> lsPredicates = new ArrayList<>();
 				if (province != null && province.size() > 0) {
 					In<String> in = cb.in(pathProvince);
@@ -72,6 +70,9 @@ public class MgmtMajorPassScore {
 						in.value(str);
 					}
 					lsPredicates.add(in);
+				}
+				if (!schoolName.equals("")) {
+					lsPredicates.add(cb.equal(pathSchoolName, schoolName));
 				}
 				Predicate[] p = new Predicate[lsPredicates.size()];
 				return cb.and(lsPredicates.toArray(p));

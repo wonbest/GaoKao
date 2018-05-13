@@ -1,5 +1,8 @@
 package com.ll.gaokao.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.ll.gaokao.model.MajorPassScore;
+import com.ll.gaokao.service.MgmtMajor;
 import com.ll.gaokao.service.MgmtMajorPassScore;
 import com.ll.gaokao.util.BGDataGrid;
 import com.ll.gaokao.util.BGPageModel;
@@ -23,6 +27,9 @@ import com.ll.gaokao.util.ResultJson;
 public class CtrlMajorPassScore {
 	@Autowired
 	private MgmtMajorPassScore mgmtMajorPassScore;
+
+	@Autowired
+	private MgmtMajor mgmtMajor;
 
 	/**
 	 * 查询录取批次信息，为批次标签组提供数据
@@ -80,12 +87,12 @@ public class CtrlMajorPassScore {
 	 */
 	@RequestMapping(value = "getMajorPassScoreList")
 	@ResponseBody
-	public BGDataGrid getMajorPassScoreList(BGPageModel pageModel, String province, String batch, String year) {
-		Page<MajorPassScore> page = mgmtMajorPassScore.queryPageBySearchParams(
-				pageModel.bePageable(),
-				JSON.parseArray(province, String.class), 
-				JSON.parseArray(batch, String.class),
-				JSON.parseArray(year, String.class));
+	public BGDataGrid getMajorPassScoreList(BGPageModel pageModel, String province, String batch, String year,
+			String schoolName) {
+		Page<MajorPassScore> page = mgmtMajorPassScore.queryPageBySearchParams(pageModel.bePageable(),
+				province.equals("") ? null : JSON.parseArray(province, String.class),
+				batch.equals("") ? null : JSON.parseArray(batch, String.class),
+				year.equals("") ? null : JSON.parseArray(year, String.class), schoolName);
 		return BGDataGrid.newInstance(page);
 	}
 }

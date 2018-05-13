@@ -24,38 +24,47 @@ import com.ll.gaokao.model.School;
 public class MgmtSchool {
 	@Autowired
 	private RepoSchool dao;
-	
+
 	/**
-	 * 查询学校的学历层次
-	 * 普通本科 高职高专...
+	 * 查询学校的学历层次 普通本科 高职高专...
+	 * 
 	 * @return
 	 */
 	public List<String> findAllSchooltype() {
 		return dao.findAllSchooltype();
 	}
-	
+
 	/**
-	 * 查询学校属性
-	 * 农林类  理工类...
+	 * 查询学校属性 农林类 理工类...
+	 * 
 	 * @return
 	 */
 	public List<String> findAllSchoolProperty() {
 		return dao.findAllSchoolproperty();
 	}
-	
+
 	/**
-	 * 查询学校性质
-	 * 公办 民办..
+	 * 查询所有学校名称
+	 * 
+	 * @return
+	 */
+	public List<String> findAllSchoolName() {
+		return dao.findAllSchoolName();
+	}
+
+	/**
+	 * 查询学校性质 公办 民办..
+	 * 
 	 * @return
 	 */
 	public List<String> findAllSchoolNature() {
 		return dao.findAllSchoolNature();
 	}
-	
+
 	public Page<School> findAll(Pageable pageable) {
 		return dao.findAll(pageable);
 	}
-	
+
 	public List<School> findHot() {
 		List<School> lsSchools = dao.findAll();
 		lsSchools.sort(new Comparator<School>() {
@@ -66,9 +75,10 @@ public class MgmtSchool {
 		});
 		return lsSchools.subList(0, 8);
 	}
-	
+
 	/**
 	 * 动态查询
+	 * 
 	 * @param pageable
 	 * @param schoolType
 	 * @param province
@@ -76,12 +86,8 @@ public class MgmtSchool {
 	 * @param schoolNature
 	 * @return
 	 */
-	public Page<School> queryPageFindAll(
-			Pageable pageable, 
-			List<String> schoolType, 
-			List<String> province, 
-			List<String> schoolProperty, 
-			List<String> schoolNature) {
+	public Page<School> queryPageFindAll(Pageable pageable, List<String> schoolType, List<String> province,
+			List<String> schoolProperty, List<String> schoolNature) {
 		Specification<School> specification = new Specification<School>() {
 
 			@Override
@@ -91,36 +97,36 @@ public class MgmtSchool {
 				Path<String> pathSchoolProperty = root.get("schoolproperty");
 				Path<String> pathSchoolNature = root.get("schoolnature");
 				List<Predicate> lsPredicates = new ArrayList<>();
-				if(province != null && province.size() > 0) {
+				if (province != null && province.size() > 0) {
 					In<String> in = cb.in(pathProvince);
-					for(String str : province) {
+					for (String str : province) {
 						in.value(str);
 					}
 					lsPredicates.add(in);
 				}
-				if(schoolType != null && schoolType.size() > 0) {
+				if (schoolType != null && schoolType.size() > 0) {
 					In<String> in = cb.in(pathSchoolType);
-					for(String str : schoolType) {
+					for (String str : schoolType) {
 						in.value(str);
 					}
 					lsPredicates.add(in);
 				}
-				if(schoolProperty != null && schoolProperty.size() > 0) {
+				if (schoolProperty != null && schoolProperty.size() > 0) {
 					In<String> in = cb.in(pathSchoolProperty);
-					for(String str : schoolProperty) {
+					for (String str : schoolProperty) {
 						in.value(str);
 					}
 					lsPredicates.add(in);
 				}
-				if(schoolNature != null && schoolNature.size() > 0) {
+				if (schoolNature != null && schoolNature.size() > 0) {
 					In<String> in = cb.in(pathSchoolNature);
-					for(String str : schoolNature) {
+					for (String str : schoolNature) {
 						in.value(str);
 					}
 					lsPredicates.add(in);
 				}
-				Predicate[] p = new Predicate[lsPredicates.size()];  
-                return cb.and(lsPredicates.toArray(p));
+				Predicate[] p = new Predicate[lsPredicates.size()];
+				return cb.and(lsPredicates.toArray(p));
 			}
 		};
 		return dao.findAll(specification, pageable);
