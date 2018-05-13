@@ -93,7 +93,6 @@ export default class ProvincePassScore extends React.Component<ProvincePassScore
         }, () => {
             this.fetch()
         })
-
     }
 
     /** 监控工具栏过滤条件变化 */

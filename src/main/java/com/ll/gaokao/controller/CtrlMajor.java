@@ -15,11 +15,11 @@ import com.ll.gaokao.util.ResultJson;
 
 @Controller
 public class CtrlMajor {
-	
+
 	@Autowired
 	private MgmtMajor mgmtMajor;
-	
-	@RequestMapping(value="findAllMajorLevel")
+
+	@RequestMapping(value = "findAllMajorLevel")
 	@ResponseBody
 	public ResultJson findAllMajorLevel() {
 		try {
@@ -28,8 +28,8 @@ public class CtrlMajor {
 			return ResultJson.FALSE;
 		}
 	}
-	
-	@RequestMapping(value="findAllMajorType")
+
+	@RequestMapping(value = "findAllMajorType")
 	@ResponseBody
 	public ResultJson findAllMajorType() {
 		try {
@@ -38,21 +38,17 @@ public class CtrlMajor {
 			return ResultJson.FALSE;
 		}
 	}
-	
+
 	/**
-	 * 分页获取专业列表
+	 * 分页获取专业列表， 动态查询
+	 * 
 	 * @return BGDataGrid
-	 */ 
+	 */
 	@RequestMapping(value = "getMajorList")
 	@ResponseBody
-	public BGDataGrid getMajorList(
-			BGPageModel pageModel, 
-			String majorType, 
-			String majorLevel) {
-		Page<Major> page = mgmtMajor.queryPageBySearchParams(
-				pageModel.bePageable(), 
-				JSON.parseArray(majorType, String.class),
-				JSON.parseArray(majorLevel, String.class));
+	public BGDataGrid getMajorList(BGPageModel pageModel, String majorType, String majorLevel) {
+		Page<Major> page = mgmtMajor.queryPageBySearchParams(pageModel.bePageable(),
+				JSON.parseArray(majorType, String.class), JSON.parseArray(majorLevel, String.class));
 		return BGDataGrid.newInstance(page);
 	}
 }

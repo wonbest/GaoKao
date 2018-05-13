@@ -23,19 +23,18 @@ import com.ll.gaokao.model.Major;
 public class MgmtMajor {
 	@Autowired
 	private RepoMajor dao;
-	
+
+	/** 查询专业层次（本科/专科） */
 	public List<String> findAllMajorLevel() {
 		return dao.findAllMajorLevel();
 	}
-	
+
+	/** 查询专业类别 */
 	public List<String> findAllMajorType() {
 		return dao.findAllMajorType();
 	}
-	
-	public Page<Major> queryPageBySearchParams(
-			Pageable pageable, 
-			List<String> majorType, 
-			List<String> majorLevel) {
+
+	public Page<Major> queryPageBySearchParams(Pageable pageable, List<String> majorType, List<String> majorLevel) {
 		Specification<Major> specification = new Specification<Major>() {
 
 			@Override
@@ -43,22 +42,22 @@ public class MgmtMajor {
 				Path<String> pathMajorType = root.get("zytype");
 				Path<String> pathMajorLevel = root.get("zycengci");
 				List<Predicate> lsPredicates = new ArrayList<>();
-				if(majorType != null && majorType.size() > 0) {
+				if (majorType != null && majorType.size() > 0) {
 					In<String> in = cb.in(pathMajorType);
-					for(String str : majorType) {
+					for (String str : majorType) {
 						in.value(str);
 					}
 					lsPredicates.add(in);
 				}
-				if(majorLevel != null && majorLevel.size() > 0) {
+				if (majorLevel != null && majorLevel.size() > 0) {
 					In<String> in = cb.in(pathMajorLevel);
-					for(String str : majorLevel) {
+					for (String str : majorLevel) {
 						in.value(str);
 					}
 					lsPredicates.add(in);
 				}
-				Predicate[] p = new Predicate[lsPredicates.size()];  
-                return cb.and(lsPredicates.toArray(p));
+				Predicate[] p = new Predicate[lsPredicates.size()];
+				return cb.and(lsPredicates.toArray(p));
 			}
 		};
 		return dao.findAll(specification, pageable);

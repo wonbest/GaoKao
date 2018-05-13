@@ -1,47 +1,131 @@
 import * as React from 'react'
 import * as ReactDom from 'react-dom'
 
-import { Tag, Card, Row, Col, Icon } from 'antd'
+import { Tag, Card, Row, Col, Icon, Table, Button } from 'antd'
+import { Select, Input } from 'antd'
+
+interface SearchParams {
+    province: string,
+    batch: string,
+    year: string,
+}
 
 interface MajorPassScoreStates {
+    pagination: any
     dataSource: any[]
+    searchParams: SearchParams
+    loading: boolean
 }
 export default class MajorPassScore extends React.Component<any, MajorPassScoreStates> {
+
+    private columns = [
+        { title: '学校名称', dataIndex: 'schoolname', width: '' },
+        { title: '专业名称', dataIndex: 'specialtyname', width: '' },
+        { title: '招生地区', dataIndex: 'localprovince', width: '' },
+        { title: '招生年份', dataIndex: 'year', width: '' },
+        { title: '学生类型', dataIndex: 'studenttype', width: '' },
+        { title: '最高分', dataIndex: 'max', width: '' },
+        { title: '最低分', dataIndex: 'min', width: '' }
+    ]
+
     constructor(props) {
         super(props)
         this.state = {
-            dataSource: []
+            dataSource: [],
+            pagination: {
+                current: 1,
+                total: 100,
+                pageSize: 10
+            },
+            searchParams: {
+                province: '',
+                batch: '',
+                year: '',
+            },
+            loading: false
         }
     }
 
-    handleTagsOnChange = (param) => {
-        console.log(param)
+    /** 标签变化事件 */
+    handleTagsOnChange = (params: SearchParams) => {
+        console.log(params)
+        this.setState({
+            searchParams: params
+        }, () => {
+            this.fetchDataSource({
+                rowCount: 10,
+                current: 1,
+            })
+        })
+    }
+
+    /** pagination变化事件 */
+    handleTableOnChange = (pagination) => {
+        this.fetchDataSource({
+            current: pagination.current,
+            rowCount: pagination.pageSize,
+        })
+    }
+
+    /** 加载表格数据源 */
+    fetchDataSource = (params = {}) => {
+        this.setState({
+            loading: true
+        }, () => {
+            $.ajax({
+                url: 'getMajorPassScoreList',
+                type: 'post',
+                data: {
+                    ...params,
+                    ...this.state.searchParams
+                },
+                success: (data) => {
+                    console.log(data.result)
+                    const pagination = { ...this.state.pagination }
+                    pagination.total = data.total
+                    pagination.current = data.current
+                    pagination.pageSize = data.rowCount
+                    this.setState({
+                        dataSource: data.rows,
+                        loading: false,
+                        pagination,
+                    })
+                }
+            })
+        })
+
+    }
+
+    componentDidMount() {
+        this.fetchDataSource({
+            rowCount: this.state.pagination.pageSize,
+            current: this.state.pagination.current,
+        })
     }
 
     render() {
         return (
             <div>
                 <ToolBar onSubmit={this.handleTagsOnChange} />
+                <Table rowKey={(record: any) => record.id}
+                    columns={this.columns}
+                    dataSource={this.state.dataSource}
+                    pagination={this.state.pagination}
+                    onChange={this.handleTableOnChange} />
             </div>
         )
     }
 }
 
 interface ToolBarProps {
-    onSubmit: (param) => void
+    onSubmit: (param: SearchParams) => void
 }
 interface ToolBarStates {
-    majorTypeTagsData: any[]
-    majorTypeSelectedTags: any[]
+    majorTypeData: any[]
 
+    /** 院校招生地区 */
     schoolProvinceTagsData: any[]
     schoolProvinceSelectedTags: any[]
-
-    schoolTypeTagsData: any[]
-    schoolTypeSelectedTags: any[]
-
-    educationTagsData: any[]
-    educationSelectedTags: any[]
 
     batchTagsData: any[]
     batchSelectedTags: any[]
@@ -54,14 +138,9 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
     constructor(props) {
         super(props)
         this.state = {
-            majorTypeTagsData: [],
-            majorTypeSelectedTags: [],
+            majorTypeData: [],
             schoolProvinceTagsData: [],
             schoolProvinceSelectedTags: [],
-            schoolTypeTagsData: [],
-            schoolTypeSelectedTags: [],
-            educationTagsData: [],
-            educationSelectedTags: [],
             batchTagsData: [],
             batchSelectedTags: [],
             yearTagsData: [],
@@ -71,13 +150,11 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
 
     /** 标签onchange事件 */
     handleTagsOnChange = () => {
-        let searchParams = {
-            majorType: this.state.majorTypeSelectedTags,
-            schoolProvince: this.state.schoolProvinceSelectedTags,
-            schoolTypeTagsData: this.state.schoolTypeSelectedTags,
-            educationTagsData: this.state.educationSelectedTags,
-            batchTagsData: this.state.batchSelectedTags,
-            yearTagsData: this.state.yearSelectedTags,
+        // TODO 添加学校和专业的状态
+        let searchParams: SearchParams = {
+            province: JSON.stringify(this.state.schoolProvinceSelectedTags),
+            batch: JSON.stringify(this.state.batchSelectedTags),
+            year: JSON.stringify(this.state.yearSelectedTags),
         }
         this.props.onSubmit(searchParams)
     }
@@ -85,38 +162,11 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
     /** 监控工具栏过滤条件变化 */
     handleOptionOnClick = (tag: string, checked: boolean, prop: string) => {
         switch (prop) {
-            case 'majorType':
-                this.setState({
-                    majorTypeSelectedTags: checked
-                        ? [...this.state.majorTypeSelectedTags, tag]
-                        : this.state.majorTypeSelectedTags.filter(t => t !== tag)
-                }, () => {
-                    this.handleTagsOnChange()
-                })
-                break
             case 'schoolProvince':
                 this.setState({
                     schoolProvinceSelectedTags: checked
                         ? [...this.state.schoolProvinceSelectedTags, tag]
                         : this.state.schoolProvinceSelectedTags.filter(t => t !== tag)
-                }, () => {
-                    this.handleTagsOnChange()
-                })
-                break
-            case 'schoolType':
-                this.setState({
-                    schoolTypeSelectedTags: checked
-                        ? [...this.state.schoolTypeSelectedTags, tag]
-                        : this.state.schoolTypeSelectedTags.filter(t => t !== tag)
-                }, () => {
-                    this.handleTagsOnChange()
-                })
-                break
-            case 'education':
-                this.setState({
-                    educationSelectedTags: checked
-                        ? [...this.state.educationSelectedTags, tag]
-                        : this.state.educationSelectedTags.filter(t => t !== tag)
                 }, () => {
                     this.handleTagsOnChange()
                 })
@@ -144,6 +194,14 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
         }
     }
 
+    handleMajorTypeSelectOnChange = e => {
+        console.log(e)
+    }
+
+    handleMajorSelectOnChange = e => {
+        console.log(e)
+    }
+
     /** 创建工具栏搜索条件标签 */
     createCheckableTag = (data = [], prop: string) => {
         let options = []
@@ -165,13 +223,13 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
             url: 'findAllMajorType',
             success: (data) => {
                 this.setState({
-                    majorTypeTagsData: data.result
+                    majorTypeData: data.result
                 })
             }
         })
     }
 
-    /** 加载院校省份数据 */
+    /** 加载院校招生地区标签数据 */
     fetchSchoolProvince = () => {
         $.ajax({
             url: 'getAllProvince',
@@ -185,34 +243,6 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
         })
     }
 
-    /** 加载学院类型（综合、农林...）数据 */
-    fetchSchoolProperty = () => {
-        $.ajax({
-            url: 'getAllSchoolProperty',
-            type: 'post',
-            async: false,
-            success: (data) => {
-                this.setState({
-                    schoolTypeTagsData: data.result.filter(e => e !== '[]')
-                })
-            }
-        })
-    }
-
-    /** 加载学历数据 */
-    fetchEducation = () => {
-        $.ajax({
-            url: 'getAllSchoolType',
-            type: 'post',
-            async: false,
-            success: (data) => {
-                this.setState({
-                    educationTagsData: data.result.filter(e => e !== '[]')
-                })
-            }
-        })
-    }
-
     /** 获取年份标签数据源 */
     fetchSeachParams = () => {
         $.ajax({
@@ -220,50 +250,80 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
             success: (data) => {
                 this.setState({
                     yearTagsData: data.result.year,
-                    // batchTagsData: data.result.batch,
                 })
             }
         })
     }
 
+    /** 加载录取批次信息 */
+    fetchBatch = () => {
+        $.ajax({
+            url: 'getDistinctBatch',
+            success: (data) => {
+                this.setState({
+                    batchTagsData: data.result
+                })
+            }
+        })
+    }
+
+    /** 创建下拉框数据源 */
+    buildSelectOptions = (data: any[]) => {
+        return data.map(e => <Select.Option key={e}>{e}</Select.Option>)
+    }
+
     componentDidMount() {
         this.fetchMajorType()
         this.fetchSchoolProvince()
-        this.fetchSchoolProperty()
-        this.fetchEducation()
         this.fetchSeachParams()
+        this.fetchBatch()
     }
 
     render() {
         return (
             <div>
                 <Card>
-                    <Row>
-                        <Col span={3}>专业类别</Col>
-                        <Col span={1}><Icon type="right" /></Col>
-                        <Col span={20}>
-                            {...this.createCheckableTag(this.state.majorTypeTagsData, 'majorType')}
+                    <Row style={{ margin: '10px 0px' }} gutter={16}>
+                        <Col span={8}>
+                            <Input placeholder="请输入学校名称" />
+                        </Col>
+                        <Col span={12}>
+                            <Row gutter={8}>
+                                <Col span={12}>
+                                    <Select
+                                        style={{ width: 150 }}
+                                        showSearch
+                                        defaultValue="all"
+                                        onChange={this.handleMajorTypeSelectOnChange}
+                                        placeholder="请选择专业类别"
+                                        filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                                        <Select.Option key="all">全部</Select.Option>
+                                        {this.buildSelectOptions(this.state.majorTypeData)}
+                                    </Select>
+                                </Col>
+                                <Col span={12}>
+                                    <Select
+                                        style={{ width: 150 }}
+                                        showSearch
+                                        onChange={this.handleMajorSelectOnChange}
+                                        defaultValue="all"
+                                        placeholder="请选择专业"
+                                        filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                                        <Select.Option key="all">全部</Select.Option>
+                                        
+                                    </Select>
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col span={4}>
+                            <Button type="primary">搜索</Button>
                         </Col>
                     </Row>
                     <Row>
-                        <Col span={3}>院校省份</Col>
+                        <Col span={3}>招生地区</Col>
                         <Col span={1}><Icon type="right" /></Col>
                         <Col span={20}>
                             {...this.createCheckableTag(this.state.schoolProvinceTagsData, 'schoolProvince')}
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={3}>院校分类</Col>
-                        <Col span={1}><Icon type="right" /></Col>
-                        <Col span={20}>
-                            {...this.createCheckableTag(this.state.schoolTypeTagsData, 'schoolType')}
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={3}>学历层次</Col>
-                        <Col span={1}><Icon type="right" /></Col>
-                        <Col span={20}>
-                            {...this.createCheckableTag(this.state.educationTagsData, 'education')}
                         </Col>
                     </Row>
                     <Row>
