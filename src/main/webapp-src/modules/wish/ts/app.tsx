@@ -17,7 +17,7 @@ interface WishStates {
     pagination: any
     loading: boolean
 }
-class Wish extends React.Component<WishProps, WishStates> {
+export default class Wish extends React.Component<WishProps, WishStates> {
 
     private columns: any[]
 
