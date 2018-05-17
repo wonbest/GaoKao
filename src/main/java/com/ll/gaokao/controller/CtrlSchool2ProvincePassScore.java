@@ -26,10 +26,10 @@ public class CtrlSchool2ProvincePassScore {
 
 	@RequestMapping(value = "getWish")
 	@ResponseBody
-	public BGDataGrid getWish(BGPageModel pageModel, String studentProvince, String risk, String score,
+	public BGDataGrid getWish(BGPageModel pageModel, String studentProvince, String batch, String score,
 			String passScore, String schoolProvince, String studentType) {
 		Page<School2ProvincePassScore> page = mgmtSchool2ProvincePassScore.getWish(pageModel.bePageable(),
-				studentProvince, risk, score, passScore, JSON.parseArray(schoolProvince, String.class), studentType);
+				studentProvince, batch, score, passScore, JSON.parseArray(schoolProvince, String.class), studentType);
 		return BGDataGrid.newInstance(page);
 	}
 

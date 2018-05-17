@@ -18,23 +18,29 @@ interface StudentInfoProps extends FormComponentProps {
     onSubmit: (param) => void
 }
 interface StudentInfoStates {
-
+    province: any[]
+    batch: any[]
 }
 class StudentInfo extends React.Component<StudentInfoProps, StudentInfoStates> {
 
+    state: StudentInfoStates = {
+        province: [],
+        batch: []
+    }
+
     // 加载生源地下拉框数据
-    fetchLocalProvince = () => {
-        let optionData = []
+    fetchProvinceAndBatch = () => {
         $.ajax({
-            url: 'getLocalProvince',
-            async: false,
+            url: 'getSearchTagsData',
             success: (data) => {
                 if (data.state) {
-                    optionData = data.result
+                    this.setState({
+                        province: data.result.studentProvince,
+                        batch: data.result.batch
+                    })
                 }
             }
         })
-        return optionData
     }
 
     handleOnSubmit = () => {
@@ -45,13 +51,17 @@ class StudentInfo extends React.Component<StudentInfoProps, StudentInfoStates> {
         })
     }
 
+    componentWillMount() {
+        this.fetchProvinceAndBatch()
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form
         return (
             <div>
                 <Form>
                     <Row>
-                        <Col span={4}>
+                        <Col span={6}>
                             <Form.Item>
                                 {getFieldDecorator('studentProvince', {
                                     rules: [{
@@ -60,26 +70,32 @@ class StudentInfo extends React.Component<StudentInfoProps, StudentInfoStates> {
                                     }],
                                 })(
                                     <Select showSearch
-                                        style={{ width: 120 }}
+                                        style={{ width: 150 }}
                                         placeholder="生源地选择"
                                         filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0} >
-                                        {this.fetchLocalProvince().map((value, index) => {
+                                        {this.state.province.map((value, index) => {
                                             return <Select.Option key={value}>{value}</Select.Option>
                                         })}
                                     </Select>
                                 )}
                             </Form.Item>
                         </Col>
-                        <Col span={9}>
-                            <Form.Item label="风险系数" labelCol={{ span: 8 }} wrapperCol={{ span: 12 }}>
-                                {getFieldDecorator('risk', {
-                                    initialValue: "low"
+                        <Col span={7}>
+                            <Form.Item>
+                                {getFieldDecorator('batch', {
+                                    rules: [{
+                                        required: true,
+                                        message: '请选择录取批次',
+                                    }],
                                 })(
-                                    <Radio.Group>
-                                        <Radio.Button value={RISK.HIGH}>高</Radio.Button>
-                                        <Radio.Button value={RISK.MIDDLE}>中</Radio.Button>
-                                        <Radio.Button value={RISK.LOW}>低</Radio.Button>
-                                    </Radio.Group>
+                                    <Select showSearch
+                                        style={{ width: 150 }}
+                                        placeholder="请选择录取批次"
+                                        filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0} >
+                                        {this.state.batch.map((value, index) => {
+                                            return <Select.Option key={value}>{value}</Select.Option>
+                                        })}
+                                    </Select>
                                 )}
                             </Form.Item>
                         </Col>

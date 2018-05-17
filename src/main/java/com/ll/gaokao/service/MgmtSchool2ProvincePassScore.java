@@ -67,49 +67,65 @@ public class MgmtSchool2ProvincePassScore {
 	 * @param passScore
 	 * @return
 	 */
-	public String computeDifference(String risk, String score, String passScore) {
-		switch (risk) {
-		case "high":
-			return String
-					.valueOf(Integer.parseInt(score) - Integer.parseInt(passScore) + MgmtSchool2ProvincePassScore.HIGH);
-		case "middle":
-			return String.valueOf(
-					Integer.parseInt(score) - Integer.parseInt(passScore) + MgmtSchool2ProvincePassScore.MIDDLE);
-		case "low":
-			return String
-					.valueOf(Integer.parseInt(score) - Integer.parseInt(passScore) + MgmtSchool2ProvincePassScore.LOW);
-		default:
-			return "";
-		}
+	public int computeDifference(String score, String passScore, String province, String batch) {
+		int a = this.computeAvgDiff(province, batch) + Integer.parseInt(passScore.equals("") ? "0" : passScore)
+				- Integer.parseInt(score.equals("") ? "0" : score);
+		return a;
 	}
 
 	/**
-	 * 计算近三年的线差平均值
+	 * 计算近三年本省的线差平均值
 	 * 
 	 * @return
 	 */
-	public int computeAvgDiff() {
+	public int computeAvgDiff(String province, String batch) {
 		String[] years = DateUtil.getNearlyThreeYears();
 		int count = 0;
 		for (String year : years) {
-			count += this.computeAvgDiffByYear(year);
+			count += this.computeAvgDiffByYear(year, province, batch);
 		}
-		return count / years.length;
+		count = count / years.length;
+		return count;
 	}
 
 	/**
-	 * 获取指定年份的线差平均值
+	 * 获取指定年份和省份的线差平均值
 	 * 
 	 * @param year
 	 * @return
 	 */
-	public int computeAvgDiffByYear(String year) {
-		List<String> diffs = dao.getDifference(year);
+	public int computeAvgDiffByYear(String year, String province, String batch) {
+
+		Specification<School2ProvincePassScore> specification = new Specification<School2ProvincePassScore>() {
+
+			@Override
+			public Predicate toPredicate(Root<School2ProvincePassScore> root, CriteriaQuery<?> query,
+					CriteriaBuilder cb) {
+				Path<String> pathBatch = root.get("batch");
+				Path<String> pathStudentProvince = root.get("localprovince");
+				Path<String> pathYear = root.get("year");
+				List<Predicate> lsPredicates = new ArrayList<>();
+				if (!batch.equals("")) {
+					lsPredicates.add(cb.equal(pathBatch, batch));
+				}
+				if (!province.equals("")) {
+					lsPredicates.add(cb.equal(pathStudentProvince, province));
+				}
+				if (!year.equals("")) {
+					lsPredicates.add(cb.equal(pathYear, year));
+				}
+				Predicate[] p = new Predicate[lsPredicates.size()];
+				return cb.and(lsPredicates.toArray(p));
+			}
+		};
+
+		List<School2ProvincePassScore> list = dao.findAll(specification);
+
 		int count = 0;
-		for (String diff : diffs) {
-			count += Integer.parseInt(diff);
+		for (School2ProvincePassScore temp : list) {
+			count += Integer.parseInt(temp.getFencha());
 		}
-		return count / diffs.size();
+		return count / list.size();
 	}
 
 	/**
@@ -122,12 +138,13 @@ public class MgmtSchool2ProvincePassScore {
 	 * @param passScore
 	 * @param schoolProvince
 	 * @param studentType
-	 * @return 推荐支援
+	 * @return 推荐志愿
 	 */
-	public Page<School2ProvincePassScore> getWish(Pageable pageable, String studentProvince, String risk, String score,
+	public Page<School2ProvincePassScore> getWish(Pageable pageable, String studentProvince, String batch, String score,
 			String passScore, List<String> schoolProvince, String studentType) {
-		return this.queryPageByScore(pageable, studentProvince, this.computeDifference(risk, score, passScore),
-				schoolProvince, studentType);
+		return this.queryPageByScore(pageable, batch, studentProvince,
+				String.valueOf(this.computeDifference(score, passScore, studentProvince, batch)), schoolProvince,
+				studentType);
 	}
 
 	/**
@@ -141,16 +158,15 @@ public class MgmtSchool2ProvincePassScore {
 	 * @param studentType
 	 * @return
 	 */
-	public Page<School2ProvincePassScore> queryPageByScore(Pageable pageable, String studentProvince, String difference,
-			List<String> schoolProvince, String studentType) {
-
-		System.out.println(DateUtil.getNearlyThreeYears());
+	public Page<School2ProvincePassScore> queryPageByScore(Pageable pageable, String batch, String studentProvince,
+			String difference, List<String> schoolProvince, String studentType) {
 
 		Specification<School2ProvincePassScore> specification = new Specification<School2ProvincePassScore>() {
 
 			@Override
 			public Predicate toPredicate(Root<School2ProvincePassScore> root, CriteriaQuery<?> query,
 					CriteriaBuilder cb) {
+				Path<String> pathBatch = root.get("batch");
 				Path<String> pathSchoolProvince = root.get("province");
 				Path<String> pathStudentProvince = root.get("localprovince");
 				Path<String> pathStudentType = root.get("studenttype");
@@ -158,8 +174,11 @@ public class MgmtSchool2ProvincePassScore {
 				Path<String> pathYear = root.get("year");
 				List<Predicate> lsPredicates = new ArrayList<>();
 
-				lsPredicates.add(cb.equal(pathYear, String.valueOf(DateUtil.getCurrentYear())));
+				lsPredicates.add(cb.equal(pathYear, String.valueOf(DateUtil.getCurrentYear() - 1)));
 
+				if (!batch.equals("")) {
+					lsPredicates.add(cb.equal(pathBatch, batch));
+				}
 				if (schoolProvince != null && schoolProvince.size() > 0) {
 					In<String> in = cb.in(pathSchoolProvince);
 					for (String str : schoolProvince) {
@@ -174,7 +193,7 @@ public class MgmtSchool2ProvincePassScore {
 					lsPredicates.add(cb.equal(pathStudentType, studentType));
 				}
 				if (!difference.equals("")) {
-					lsPredicates.add(cb.lessThan(pathDifference, Integer.parseInt(difference)));
+					lsPredicates.add(cb.lessThanOrEqualTo(pathDifference, Integer.parseInt(difference)));
 				}
 				Predicate[] p = new Predicate[lsPredicates.size()];
 				return cb.and(lsPredicates.toArray(p));

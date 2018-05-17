@@ -12,23 +12,26 @@ import com.ll.gaokao.model.School2ProvincePassScore;
 
 public interface RepoSchool2ProvincePassScore extends JpaRepository<School2ProvincePassScore, String> {
 
-	public Page<School2ProvincePassScore> findAll(Specification<School2ProvincePassScore> specification, Pageable pageable);
+	public List<School2ProvincePassScore> findAll(Specification<School2ProvincePassScore> specification);
 
-	@Query(value="select distinct province from school_pass_score", nativeQuery=true)
+	public Page<School2ProvincePassScore> findAll(Specification<School2ProvincePassScore> specification,
+			Pageable pageable);
+
+	@Query(value = "select distinct province from school_pass_score", nativeQuery = true)
 	public List<String> findSchoolProvince();
-	
-	@Query(value="select distinct localprovince from school_pass_score", nativeQuery=true)
+
+	@Query(value = "select distinct localprovince from school_pass_score", nativeQuery = true)
 	public List<String> findStudentProvince();
-	
-	@Query(value="select distinct year from school_pass_score", nativeQuery=true)
+
+	@Query(value = "select distinct year from school_pass_score", nativeQuery = true)
 	public List<String> findYear();
-	
-	@Query(value="select distinct batch from school_pass_score", nativeQuery=true)
+
+	@Query(value = "select distinct batch from school_pass_score", nativeQuery = true)
 	public List<String> findBatch();
-	
-	@Query(value="select distinct studenttype from school_pass_score", nativeQuery=true)
+
+	@Query(value = "select distinct studenttype from school_pass_score", nativeQuery = true)
 	public List<String> findStudentType();
-	
-	@Query(value="select fencha from school_pass_score where year=?1", nativeQuery=true)
-	public List<String> getDifference(String year);
+
+	@Query(value = "select fencha from school_pass_score where year=?1 and province=?2", nativeQuery = true)
+	public List<String> getDifference(String year, String province);
 }

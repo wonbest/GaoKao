@@ -18,7 +18,7 @@ interface WishStates {
     loading: boolean
 
     studentProvince: string
-    risk: string
+    batch: string
     score: string
     passScore: string
 
@@ -40,7 +40,7 @@ export default class Wish extends React.Component<WishProps, WishStates> {
                 pageSize: 10
             },
             studentProvince: '',
-            risk: '',
+            batch: '',
             score: '',
             passScore: '',
 
@@ -69,7 +69,7 @@ export default class Wish extends React.Component<WishProps, WishStates> {
         console.log(param)
         this.setState({
             studentProvince: param.studentProvince,
-            risk: param.risk,
+            batch: param.batch,
             score: param.score,
             passScore: param.passScore
         }, () => {
@@ -100,6 +100,8 @@ export default class Wish extends React.Component<WishProps, WishStates> {
             success: data => {
                 const pagination = { ...this.state.pagination }
                 pagination.total = data.total
+                pagination.current = data.current
+                pagination.pageSize = data.rowCount
                 this.setState({
                     dataSource: data.rows,
                     loading: false,
@@ -113,7 +115,7 @@ export default class Wish extends React.Component<WishProps, WishStates> {
     fetchDataSourchWithParams = (rowCount: number, current: number) => {
         this.fetchDataSource({
             studentProvince: this.state.studentProvince,
-            risk: this.state.risk,
+            batch: this.state.batch,
             score: this.state.score,
             passScore: this.state.passScore,
             schoolProvince: this.state.schoolProvince,
