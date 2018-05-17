@@ -68,24 +68,22 @@ public class MgmtSchool2ProvincePassScore {
 	 * @return
 	 */
 	public int computeDifference(String score, String passScore, String province, String batch) {
-		int a = this.computeAvgDiff(province, batch) + Integer.parseInt(passScore.equals("") ? "0" : passScore)
-				- Integer.parseInt(score.equals("") ? "0" : score);
-		return a;
+		return this.computeAvgDiff(province, batch) + Integer.parseInt(score.equals("") ? "0" : score)
+				- Integer.parseInt(passScore.equals("") ? "0" : passScore);
 	}
 
 	/**
-	 * 计算近三年本省的线差平均值
+	 * 计算近三年本省的线差浮动的平均值
 	 * 
 	 * @return
 	 */
 	public int computeAvgDiff(String province, String batch) {
 		String[] years = DateUtil.getNearlyThreeYears();
-		int count = 0;
-		for (String year : years) {
-			count += this.computeAvgDiffByYear(year, province, batch);
-		}
-		count = count / years.length;
-		return count;
+		int diff1 = this.computeAvgDiffByYear(years[0], province, batch);
+		int diff2 = this.computeAvgDiffByYear(years[1], province, batch);
+		int diff3 = this.computeAvgDiffByYear(years[2], province, batch);
+		int count = Math.abs(diff1 - diff2) + Math.abs(diff2 - diff3);
+		return count / years.length;
 	}
 
 	/**
@@ -173,8 +171,12 @@ public class MgmtSchool2ProvincePassScore {
 				Expression<Integer> pathDifference = root.get("fencha").as(Integer.class);
 				Path<String> pathYear = root.get("year");
 				List<Predicate> lsPredicates = new ArrayList<>();
-
-				lsPredicates.add(cb.equal(pathYear, String.valueOf(DateUtil.getCurrentYear() - 1)));
+				
+				In<String> years = cb.in(pathYear);
+				for (String str : DateUtil.getNearlyThreeYears()) {
+					years.value(str);
+				}
+				lsPredicates.add(years);
 
 				if (!batch.equals("")) {
 					lsPredicates.add(cb.equal(pathBatch, batch));

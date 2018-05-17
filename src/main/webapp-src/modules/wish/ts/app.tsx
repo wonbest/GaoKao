@@ -155,7 +155,8 @@ export default class Wish extends React.Component<WishProps, WishStates> {
                         onChange={this.handleTableOnChange}
                         columns={this.columns}
                         dataSource={this.state.dataSource}
-                        loading={this.state.loading} />
+                        loading={this.state.loading}
+                        pagination={this.state.pagination} />
                 </Card>
             </div>
         )
