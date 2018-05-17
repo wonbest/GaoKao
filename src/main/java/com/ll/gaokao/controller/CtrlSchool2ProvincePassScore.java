@@ -23,8 +23,17 @@ import com.ll.gaokao.util.ResultJson;
 public class CtrlSchool2ProvincePassScore {
 	@Autowired
 	private MgmtSchool2ProvincePassScore mgmtSchool2ProvincePassScore;
-	
-	@RequestMapping(value="getSearchTagsData")
+
+	@RequestMapping(value = "getWish")
+	@ResponseBody
+	public BGDataGrid getWish(BGPageModel pageModel, String studentProvince, String risk, String score,
+			String passScore, String schoolProvince, String studentType) {
+		Page<School2ProvincePassScore> page = mgmtSchool2ProvincePassScore.getWish(pageModel.bePageable(),
+				studentProvince, risk, score, passScore, JSON.parseArray(schoolProvince, String.class), studentType);
+		return BGDataGrid.newInstance(page);
+	}
+
+	@RequestMapping(value = "getSearchTagsData")
 	@ResponseBody
 	public ResultJson getSearchTagsData() {
 		try {
@@ -33,12 +42,13 @@ public class CtrlSchool2ProvincePassScore {
 			return ResultJson.FALSE;
 		}
 	}
-	
+
 	/**
 	 * 查找所有生源地数据
+	 * 
 	 * @return
 	 */
-	@RequestMapping(value="getLocalProvince")
+	@RequestMapping(value = "getLocalProvince")
 	@ResponseBody
 	public ResultJson getLocalProvince() {
 		try {
@@ -47,9 +57,10 @@ public class CtrlSchool2ProvincePassScore {
 			return ResultJson.FALSE;
 		}
 	}
-	
+
 	/**
 	 * 动态查询
+	 * 
 	 * @param pageModel
 	 * @param schoolProvince
 	 * @param studentProvince
@@ -58,21 +69,13 @@ public class CtrlSchool2ProvincePassScore {
 	 * @param batch
 	 * @return
 	 */
-	@RequestMapping(value="getSchoolPassScore")
+	@RequestMapping(value = "getSchoolPassScore")
 	@ResponseBody
-	public BGDataGrid getSchoolPassScore(
-			BGPageModel pageModel, 
-			String schoolProvince,
-			String studentProvince,
-			String studentType,
-			String year,
-			String batch) {
-		Page<School2ProvincePassScore> page = mgmtSchool2ProvincePassScore.queryPageFindAll(
-				pageModel.bePageable(),
-				JSON.parseArray(schoolProvince, String.class),
-				JSON.parseArray(studentProvince, String.class), 
-				JSON.parseArray(studentType, String.class), 
-				JSON.parseArray(year, String.class),
+	public BGDataGrid getSchoolPassScore(BGPageModel pageModel, String schoolProvince, String studentProvince,
+			String studentType, String year, String batch) {
+		Page<School2ProvincePassScore> page = mgmtSchool2ProvincePassScore.queryPageFindAll(pageModel.bePageable(),
+				JSON.parseArray(schoolProvince, String.class), JSON.parseArray(studentProvince, String.class),
+				JSON.parseArray(studentType, String.class), JSON.parseArray(year, String.class),
 				JSON.parseArray(batch, String.class));
 		return BGDataGrid.newInstance(page);
 	}

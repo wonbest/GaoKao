@@ -13,7 +13,7 @@ interface ToolBarStates {
     schoolProvinceSelectedTags: any[]
 
     studentTypeTagsData: any[]
-    studentTypeSelectedTags: any[]
+    studentTypeSelectedTags: string
 
 }
 export default class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
@@ -23,7 +23,7 @@ export default class ToolBar extends React.Component<ToolBarProps, ToolBarStates
             schoolProvinceTagsData: [],
             schoolProvinceSelectedTags: [],
             studentTypeTagsData: [],
-            studentTypeSelectedTags: [],
+            studentTypeSelectedTags: '',
         }
     }
 
@@ -31,7 +31,7 @@ export default class ToolBar extends React.Component<ToolBarProps, ToolBarStates
     handleTagsOnChange = () => {
         let searchParams = {
             province: JSON.stringify(this.state.schoolProvinceSelectedTags),
-            studentType: JSON.stringify(this.state.studentTypeSelectedTags),
+            studentType: this.state.studentTypeSelectedTags,
         }
         this.props.onChange(searchParams)
     }
@@ -51,8 +51,8 @@ export default class ToolBar extends React.Component<ToolBarProps, ToolBarStates
             case 'studentType':
                 this.setState({
                     studentTypeSelectedTags: checked
-                        ? [...this.state.studentTypeSelectedTags, tag]
-                        : this.state.studentTypeSelectedTags.filter(t => t !== tag)
+                        ? tag
+                        : ''
                 }, () => {
                     this.handleTagsOnChange()
                 })

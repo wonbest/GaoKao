@@ -94,7 +94,6 @@ export default class SchoolTable extends React.Component<SchoolTableProps, Schoo
         }, () => {
             this.fetch()
         })
-
     }
 
     /** 加载学校列表 */

@@ -8,6 +8,11 @@ import { InputNumber } from 'antd'
 import { Form, Button } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 
+export const RISK = {
+    HIGH: 'high',
+    MIDDLE: 'middle',
+    LOW: 'low'
+}
 
 interface StudentInfoProps extends FormComponentProps {
     onSubmit: (param) => void
@@ -71,9 +76,9 @@ class StudentInfo extends React.Component<StudentInfoProps, StudentInfoStates> {
                                     initialValue: "low"
                                 })(
                                     <Radio.Group>
-                                        <Radio.Button value="high">高</Radio.Button>
-                                        <Radio.Button value="middle">中</Radio.Button>
-                                        <Radio.Button value="low">低</Radio.Button>
+                                        <Radio.Button value={RISK.HIGH}>高</Radio.Button>
+                                        <Radio.Button value={RISK.MIDDLE}>中</Radio.Button>
+                                        <Radio.Button value={RISK.LOW}>低</Radio.Button>
                                     </Radio.Group>
                                 )}
                             </Form.Item>

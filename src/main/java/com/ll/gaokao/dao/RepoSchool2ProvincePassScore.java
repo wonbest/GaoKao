@@ -28,4 +28,7 @@ public interface RepoSchool2ProvincePassScore extends JpaRepository<School2Provi
 	
 	@Query(value="select distinct studenttype from school_pass_score", nativeQuery=true)
 	public List<String> findStudentType();
+	
+	@Query(value="select fencha from school_pass_score where year=?1", nativeQuery=true)
+	public List<String> getDifference(String year);
 }
