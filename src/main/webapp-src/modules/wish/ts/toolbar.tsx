@@ -105,13 +105,13 @@ export default class ToolBar extends React.Component<ToolBarProps, ToolBarStates
                             {...this.createCheckableTag(this.state.schoolProvinceTagsData, 'schoolProvince')}
                         </Col>
                     </Row>
-                    <Row>
+                    {/* <Row>
                         <Col span={3}>学生类型</Col>
                         <Col span={1}><Icon type="right" /></Col>
                         <Col span={20}>
                             {...this.createCheckableTag(this.state.studentTypeTagsData, 'studentType')}
                         </Col>
-                    </Row>
+                    </Row> */}
                 </Card>
             </div>
         )

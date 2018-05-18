@@ -138,7 +138,7 @@ public class MgmtSchool2ProvincePassScore {
 	 * @param studentType
 	 * @return 推荐志愿
 	 */
-	public Page<School2ProvincePassScore> getWish(Pageable pageable, String studentProvince, String batch, String score,
+	public List<School2ProvincePassScore> getWish(Pageable pageable, String studentProvince, String batch, String score,
 			String passScore, List<String> schoolProvince, String studentType) {
 		return this.queryPageByScore(pageable, batch, studentProvince,
 				String.valueOf(this.computeDifference(score, passScore, studentProvince, batch)), schoolProvince,
@@ -156,7 +156,7 @@ public class MgmtSchool2ProvincePassScore {
 	 * @param studentType
 	 * @return
 	 */
-	public Page<School2ProvincePassScore> queryPageByScore(Pageable pageable, String batch, String studentProvince,
+	public List<School2ProvincePassScore> queryPageByScore(Pageable pageable, String batch, String studentProvince,
 			String difference, List<String> schoolProvince, String studentType) {
 
 		Specification<School2ProvincePassScore> specification = new Specification<School2ProvincePassScore>() {
@@ -164,6 +164,7 @@ public class MgmtSchool2ProvincePassScore {
 			@Override
 			public Predicate toPredicate(Root<School2ProvincePassScore> root, CriteriaQuery<?> query,
 					CriteriaBuilder cb) {
+				Path<String> pathSchoolName = root.get("schoolname");
 				Path<String> pathBatch = root.get("batch");
 				Path<String> pathSchoolProvince = root.get("province");
 				Path<String> pathStudentProvince = root.get("localprovince");
@@ -171,7 +172,7 @@ public class MgmtSchool2ProvincePassScore {
 				Expression<Integer> pathDifference = root.get("fencha").as(Integer.class);
 				Path<String> pathYear = root.get("year");
 				List<Predicate> lsPredicates = new ArrayList<>();
-				
+
 				In<String> years = cb.in(pathYear);
 				for (String str : DateUtil.getNearlyThreeYears()) {
 					years.value(str);
@@ -198,10 +199,12 @@ public class MgmtSchool2ProvincePassScore {
 					lsPredicates.add(cb.lessThanOrEqualTo(pathDifference, Integer.parseInt(difference)));
 				}
 				Predicate[] p = new Predicate[lsPredicates.size()];
-				return cb.and(lsPredicates.toArray(p));
+				query.where(lsPredicates.toArray(p));
+				query.groupBy(pathSchoolName);
+				return query.getRestriction();
 			}
 		};
-		return dao.findAll(specification, pageable);
+		return dao.findAll(specification);
 	}
 
 	/**

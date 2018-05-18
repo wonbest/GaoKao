@@ -1,5 +1,7 @@
 package com.ll.gaokao.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -26,11 +28,11 @@ public class CtrlSchool2ProvincePassScore {
 
 	@RequestMapping(value = "getWish")
 	@ResponseBody
-	public BGDataGrid getWish(BGPageModel pageModel, String studentProvince, String batch, String score,
+	public ResultJson getWish(BGPageModel pageModel, String studentProvince, String batch, String score,
 			String passScore, String schoolProvince, String studentType) {
-		Page<School2ProvincePassScore> page = mgmtSchool2ProvincePassScore.getWish(pageModel.bePageable(),
+		List<School2ProvincePassScore> page = mgmtSchool2ProvincePassScore.getWish(pageModel.bePageable(),
 				studentProvince, batch, score, passScore, JSON.parseArray(schoolProvince, String.class), studentType);
-		return BGDataGrid.newInstance(page);
+		return ResultJson.trueState("获取成功！", page);
 	}
 
 	@RequestMapping(value = "getSearchTagsData")

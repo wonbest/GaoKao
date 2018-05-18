@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import com.ll.gaokao.model.School;
 
 public interface RepoSchool extends JpaRepository<School, String> {
+	
+	public School findBySchoolid(String schoolid);
 
 	@Query(value = "select distinct schoolname from school", nativeQuery = true)
 	public List<String> findAllSchoolName();

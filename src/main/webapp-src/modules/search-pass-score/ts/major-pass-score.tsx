@@ -237,12 +237,12 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
     }
 
     /** 获取年份标签数据源 */
-    fetchSeachParams = () => {
+    fetchYears = () => {
         $.ajax({
-            url: 'getSearchTagsData',
+            url: 'getDistinctYears',
             success: (data) => {
                 this.setState({
-                    yearTagsData: data.result.year,
+                    yearTagsData: data.result
                 })
             }
         })
@@ -280,7 +280,7 @@ class ToolBar extends React.Component<ToolBarProps, ToolBarStates> {
     componentDidMount() {
         this.fetchSchoolName()
         this.fetchSchoolProvince()
-        this.fetchSeachParams()
+        this.fetchYears()
         this.fetchBatch()
     }
 

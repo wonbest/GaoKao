@@ -21,6 +21,21 @@ public class CtrlSchool {
 
 	@Autowired
 	private MgmtSchool mgmtSchool;
+	
+	/**
+	 * 根据id查找学校信息
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="getSchoolInfo")
+	@ResponseBody
+	public ResultJson getSchoolInfo(String id) {
+		try {
+			return ResultJson.trueState("", mgmtSchool.findById(id));
+		} catch (Exception e) {
+			return ResultJson.FALSE;
+		}
+	}
 
 	/**
 	 * 获取学校学历层次

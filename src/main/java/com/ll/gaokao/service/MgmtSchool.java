@@ -24,6 +24,10 @@ import com.ll.gaokao.model.School;
 public class MgmtSchool {
 	@Autowired
 	private RepoSchool dao;
+	
+	public School findById(String id) {
+		return dao.findBySchoolid(id);
+	}
 
 	/**
 	 * 查询学校的学历层次 普通本科 高职高专...

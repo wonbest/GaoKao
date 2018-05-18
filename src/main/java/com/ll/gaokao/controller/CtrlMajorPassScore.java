@@ -24,6 +24,16 @@ public class CtrlMajorPassScore {
 	@Autowired
 	private MgmtMajorPassScore mgmtMajorPassScore;
 
+	@RequestMapping(value = "getDistinctYears")
+	@ResponseBody
+	public ResultJson getDistinctYears() {
+		try {
+			return ResultJson.trueState("success", mgmtMajorPassScore.findDistinctYears());
+		} catch (Exception e) {
+			return ResultJson.FALSE;
+		}
+	}
+
 	/**
 	 * 查询录取批次信息，为批次标签组提供数据
 	 * 

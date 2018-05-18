@@ -14,6 +14,9 @@ public interface RepoMajorPassScore extends JpaRepository<MajorPassScore, String
 	
 	public Page<MajorPassScore> findAll(Specification<MajorPassScore> specification, Pageable pageable);
 	
+	@Query(value = "select distinct year from major_pass_score", nativeQuery = true)
+	public List<String> findYears();
+	
 	@Query(value = "select distinct batch from major_pass_score", nativeQuery = true)
 	public List<String> findBatch();
 

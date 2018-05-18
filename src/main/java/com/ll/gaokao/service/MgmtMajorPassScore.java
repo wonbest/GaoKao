@@ -28,6 +28,10 @@ public class MgmtMajorPassScore {
 	public List<String> findDistinctBatch() {
 		return dao.findBatch();
 	}
+	
+	public List<String> findDistinctYears() {
+		return dao.findYears();
+	}
 
 	/** 加载学生类别信息（文理科） */
 	public List<String> findDistinctStudentType() {

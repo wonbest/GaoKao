@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as ReactDom from 'react-dom'
 
 import { Row, Col } from 'antd'
-import { Card } from 'antd'
+import { Card, Tag } from 'antd'
 import { Button } from 'antd'
 import { Table } from 'antd'
 
@@ -48,21 +48,56 @@ export default class Wish extends React.Component<WishProps, WishStates> {
             studentType: '',
         }
         this.columns = [
-            { title: '学校名称', dataIndex: 'schoolname', width: '15%' },
+            {
+                title: '学校名称', dataIndex: '', width: '20%',
+                render: text => {
+                    let school = this.fetchSchoolInfo(text.schoolid)
+                    return <a href={school.guanwang} target="blank">{school.schoolname}</a>
+                }
+            },
             { title: '院校省份', dataIndex: 'province' },
-            { title: '招生类型', dataIndex: 'studenttype' },
-            { title: '年份', dataIndex: 'year' },
-            { title: '录取批次', dataIndex: 'batch' },
             {
-                title: '最高分', dataIndex: 'max',
-                render: text => <span>{text === '[]' ? '--' : text}</span>
+                title: '院校类型', dataIndex: '',
+                render: text => <span>{this.fetchSchoolInfo(text.schoolid).schoolproperty}</span>
             },
             {
-                title: '最低分', dataIndex: 'min',
-                render: text => <span>{text === '[]' ? '--' : text}</span>
+                title: '院校性质', dataIndex: '',
+                render: text => <span>{this.fetchSchoolInfo(text.schoolid).schoolnature}</span>
             },
-            { title: '省控线', dataIndex: 'provincescore' }
+            {
+                title: '热度排名', dataIndex: '',
+                render: text => <span>{this.fetchSchoolInfo(text.schoolid).ranking}</span>
+            },
+            {
+                title: '985/211', dataIndex: '',
+                render: text => {
+                    let school = this.fetchSchoolInfo(text.schoolid)
+                    return <span>
+                        {school.f211 === '1' ? <Tag color="#f50">211</Tag> : ''}
+                        {school.f985 === '1' ? <Tag color="#2db7f5">985</Tag> : ''}
+                        {school.f211 === '0' && school.f985 === '0' ? <Tag color="#108ee9">非985/211</Tag> : ''}
+                    </span>
+                }
+            },
         ]
+    }
+
+    fetchSchoolInfo = id => {
+        let school
+        $.ajax({
+            url: 'getSchoolInfo',
+            data: {
+                id,
+            },
+            type: 'post',
+            async: false,
+            success: data => {
+                if (data.state) {
+                    school = data.result
+                }
+            }
+        })
+        return school
     }
 
     handleOnSearch = (param) => {
@@ -98,14 +133,14 @@ export default class Wish extends React.Component<WishProps, WishStates> {
             },
             type: 'post',
             success: data => {
-                const pagination = { ...this.state.pagination }
-                pagination.total = data.total
-                pagination.current = data.current
-                pagination.pageSize = data.rowCount
+                // const pagination = { ...this.state.pagination }
+                // pagination.total = data.total
+                // pagination.current = data.current
+                // pagination.pageSize = data.rowCount
                 this.setState({
-                    dataSource: data.rows,
+                    dataSource: data.result,
                     loading: false,
-                    pagination,
+                    // pagination,
                 })
             }
         })
@@ -155,8 +190,7 @@ export default class Wish extends React.Component<WishProps, WishStates> {
                         onChange={this.handleTableOnChange}
                         columns={this.columns}
                         dataSource={this.state.dataSource}
-                        loading={this.state.loading}
-                        pagination={this.state.pagination} />
+                        loading={this.state.loading} />
                 </Card>
             </div>
         )
