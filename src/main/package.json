@@ -109,7 +109,7 @@
     "array-includes": "^3.0.2",
     "array-includes-polyfill": "^0.7.2",
     "async": "^2.2.0",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "babelify-es6-polyfill": "^1.0.4",
     "classnames": "^2.2.5",
     "color": "^0.11.3",
