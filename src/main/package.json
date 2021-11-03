@@ -80,7 +80,7 @@
     "tslint-react": "^2.6.0",
     "typescript": "^2.3.4",
     "typings": "^2.0.0",
-    "validator": "^6.3.0",
+    "validator": "^13.7.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.11.0"
@@ -175,7 +175,7 @@
     "through2": "^2.0.3",
     "thunkify": "^2.1.2",
     "toastr": "^2.1.2",
-    "validator": "^6.2.0",
+    "validator": "^13.7.0",
     "whatwg-fetch": "^2.0.3"
   },
   "browserify-shim": {
